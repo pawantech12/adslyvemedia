@@ -1,5 +1,6 @@
 "use client";
 
+import { Handshake } from "lucide-react";
 import {
   BadgeCheck,
   BarChart3,
@@ -53,7 +54,8 @@ export default function TrustedGrowthPartner() {
     <section id="about" className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <span className="inline-flex rounded-full bg-fuchsia-100 px-4 py-2 text-sm font-semibold text-fuchsia-600">
+          <span className="inline-flex items-center gap-2 rounded-full border border-fuchsia-200 bg-fuchsia-50 px-4 py-2 text-sm font-semibold text-fuchsia-600">
+            <Handshake size={16} />
             Trusted Growth Partner
           </span>
 
@@ -87,25 +89,45 @@ export default function TrustedGrowthPartner() {
         </div>
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((item) => {
+          {features.map((item, index) => {
             const Icon = item.icon;
 
             return (
               <div
                 key={item.title}
-                className="group rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-fuchsia-200 hover:shadow-xl"
+                className="group relative mt-10 rounded-[30px] border border-slate-200 bg-white px-7 pb-7 pt-12 transition-all duration-500 hover:-translate-y-2 hover:border-fuchsia-200 hover:shadow-[0_25px_60px_rgba(15,23,42,0.10)]"
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 text-white shadow-lg">
+                <div className="absolute -top-8 left-7 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 text-white shadow-xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-6">
                   <Icon size={28} />
                 </div>
 
-                <h3 className="mt-6 text-xl font-semibold text-slate-900">
-                  {item.title}
-                </h3>
+                <div className="flex justify-end">
+                  <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold tracking-[0.18em] text-slate-400 transition-all duration-300 group-hover:border-fuchsia-200 group-hover:text-fuchsia-600">
+                    0{index + 1}
+                  </span>
+                </div>
 
-                <p className="mt-3 leading-7 text-slate-600">
-                  {item.description}
-                </p>
+                <div className="mt-0">
+                  <h3 className="text-xl font-bold leading-tight text-slate-900 transition-colors duration-300 group-hover:text-fuchsia-600">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-4 text-[15px] leading-7 text-slate-600">
+                    {item.description}
+                  </p>
+                </div>
+
+                <div className="mt-7 flex items-center justify-between border-t border-slate-100 pt-5">
+                  <div className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-fuchsia-600 transition-transform duration-300 group-hover:scale-125" />
+                    <span className="h-2 w-2 rounded-full bg-violet-500 transition-transform duration-300 delay-75 group-hover:scale-125" />
+                    <span className="h-2 w-2 rounded-full bg-blue-500 transition-transform duration-300 delay-150 group-hover:scale-125" />
+                  </div>
+
+                  <div className="h-1 w-16 overflow-hidden rounded-full bg-slate-200">
+                    <div className="h-full w-0 rounded-full bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 transition-all duration-500 group-hover:w-full" />
+                  </div>
+                </div>
               </div>
             );
           })}

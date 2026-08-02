@@ -44,12 +44,13 @@ export default function Navbar() {
             className="flex items-center transition-transform duration-300 hover:scale-[1.02]"
           >
             <Image
-              src="/logo.jpg"
+              src="/logo.png"
               alt="AdsLyve Media"
-              width={190}
+              width={0}
               height={0}
+              sizes="100vw"
               priority
-              className="h-20 w-auto object-contain"
+              className="h-28 w-auto object-contain"
             />
           </Link>
 
@@ -104,7 +105,7 @@ export default function Navbar() {
         >
           <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 shrink-0">
             <Image
-              src="/logo.jpg"
+              src="/logo.png"
               alt="AdsLyve Media"
               width={150}
               height={50}
