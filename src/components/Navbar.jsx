@@ -3,18 +3,61 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { ArrowRight } from "lucide-react";
+import {
+  Menu,
+  X,
+  Home,
+  UserRound,
+  BriefcaseBusiness,
+  Workflow,
+  Building2,
+  BarChart3,
+  HelpCircle,
+  Phone,
+  ArrowRight,
+} from "lucide-react";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Services", href: "#services" },
-  { name: "Process", href: "#process" },
-  { name: "Industries", href: "#industries" },
-  { name: "Results", href: "#results" },
-  { name: "FAQ", href: "#faq" },
-  { name: "Contact", href: "#contact" },
+  {
+    name: "Home",
+    href: "#home",
+    icon: Home,
+  },
+  {
+    name: "About",
+    href: "#about",
+    icon: UserRound,
+  },
+  {
+    name: "Services",
+    href: "#services",
+    icon: BriefcaseBusiness,
+  },
+  {
+    name: "Process",
+    href: "#process",
+    icon: Workflow,
+  },
+  {
+    name: "Industries",
+    href: "#industries",
+    icon: Building2,
+  },
+  {
+    name: "Results",
+    href: "#results",
+    icon: BarChart3,
+  },
+  {
+    name: "FAQ",
+    href: "#faq",
+    icon: HelpCircle,
+  },
+  {
+    name: "Contact",
+    href: "#contact",
+    icon: Phone,
+  },
 ];
 
 export default function Navbar() {
@@ -29,6 +72,18 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (mobileMenu) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [mobileMenu]);
 
   return (
     <>
@@ -116,7 +171,7 @@ export default function Navbar() {
         />
 
         <div
-          className={`absolute right-0 top-0 z-[110] flex h-dvh w-[340px] max-w-[90%] flex-col overflow-hidden border-l border-white/60 bg-white/90 shadow-[0_25px_80px_rgba(15,23,42,0.15)] backdrop-blur-3xl transition-transform duration-500 ${
+          className={`absolute right-0 top-0 z-[110] flex h-[100dvh] w-[340px] max-w-[90%] flex-col overflow-hidden border-l border-white/60 bg-white/90 shadow-[0_25px_80px_rgba(15,23,42,0.15)] backdrop-blur-3xl transition-transform duration-500 ${
             mobileMenu ? "translate-x-0" : "translate-x-full"
           }`}
         >
@@ -143,29 +198,32 @@ export default function Navbar() {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto px-6 py-7">
-            <nav className="space-y-2">
-              {navLinks.map((item, index) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setMobileMenu(false)}
-                  className="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-slate-200/70 bg-white/80 px-5 py-4 shadow-sm backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-cyan-300 hover:bg-gradient-to-r hover:from-cyan-50 hover:via-blue-50 hover:to-fuchsia-50 hover:shadow-[0_15px_35px_rgba(6,182,212,0.15)]"
-                >
-                  {/* Animated Left Gradient Line */}
-                  <span
-                    className="
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-7">
+            <nav className="space-y-2 pb-6">
+              {navLinks.map((item, index) => {
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setMobileMenu(false)}
+                    className="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-slate-200/70 bg-white/80 px-5 py-4 shadow-sm backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-cyan-300 hover:bg-gradient-to-r hover:from-cyan-50 hover:via-blue-50 hover:to-fuchsia-50 hover:shadow-[0_15px_35px_rgba(6,182,212,0.15)]"
+                  >
+                    {/* Animated Left Gradient Line */}
+                    <span
+                      className="
       absolute left-0 top-0 h-full w-1 
       bg-gradient-to-b from-cyan-500 via-violet-500 to-fuchsia-500
       opacity-0 transition-all duration-500
       group-hover:opacity-100
       "
-                  />
+                    />
 
-                  <div className="flex items-center gap-4">
-                    {/* Number Badge */}
-                    <span
-                      className="
+                    <div className="flex items-center gap-4">
+                      {/* icon Badge */}
+                      <span
+                        className="
         flex h-9 w-9 items-center justify-center rounded-xl
         bg-gradient-to-br from-slate-100 to-white
         text-xs font-bold text-slate-500
@@ -176,13 +234,13 @@ export default function Navbar() {
         group-hover:to-fuchsia-500
         group-hover:text-white
         "
-                    >
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                      >
+                        <Icon size={18} />
+                      </span>
 
-                    {/* Link Text */}
-                    <span
-                      className="
+                      {/* Link Text */}
+                      <span
+                        className="
         text-base font-semibold text-slate-700
         transition-all duration-500
         group-hover:translate-x-1
@@ -193,14 +251,14 @@ export default function Navbar() {
         group-hover:bg-clip-text
         group-hover:text-transparent
         "
-                    >
-                      {item.name}
-                    </span>
-                  </div>
+                      >
+                        {item.name}
+                      </span>
+                    </div>
 
-                  {/* Arrow Icon */}
-                  <span
-                    className="
+                    {/* Arrow Icon */}
+                    <span
+                      className="
       flex h-10 w-10 items-center justify-center rounded-full
       bg-slate-100 text-slate-400
       transition-all duration-500
@@ -211,28 +269,29 @@ export default function Navbar() {
       group-hover:text-white
       group-hover:rotate-[-45deg]
       "
-                  >
-                    <ArrowRight
-                      size={18}
-                      className="transition-transform duration-500 group-hover:translate-x-0.5"
-                    />
-                  </span>
+                    >
+                      <ArrowRight
+                        size={18}
+                        className="transition-transform duration-500 group-hover:translate-x-0.5"
+                      />
+                    </span>
 
-                  {/* Hover Glow */}
-                  <span
-                    className="
+                    {/* Hover Glow */}
+                    <span
+                      className="
       pointer-events-none absolute -right-10 -top-10 
       h-24 w-24 rounded-full 
       bg-cyan-400/20 blur-3xl
       opacity-0 transition-opacity duration-500
       group-hover:opacity-100
       "
-                  />
-                </Link>
-              ))}
+                    />
+                  </Link>
+                );
+              })}
             </nav>
 
-            <div className="mt-10 rounded-3xl border border-slate-200 bg-gradient-to-br from-cyan-50 via-white to-fuchsia-50 p-6">
+            <div className="mt-8 mb-6 rounded-3xl border border-slate-200 bg-gradient-to-br from-cyan-50 via-white to-fuchsia-50 p-6">
               <p className="text-sm font-medium text-slate-500">
                 Ready to grow your business?
               </p>
