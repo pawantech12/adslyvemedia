@@ -72,7 +72,7 @@ export default function TrustedGrowthPartner() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
     >
       <div className="absolute inset-0 -z-20 overflow-hidden">
         <motion.div

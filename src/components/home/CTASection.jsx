@@ -8,7 +8,7 @@ export default function CTA() {
   return (
     <section
       id="cta"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 py-20 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 py-20 max-sm:py-10"
     >
       {/* Background Effects */}
 

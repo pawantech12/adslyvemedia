@@ -16,7 +16,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-36 pb-20 lg:pb-28"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-36 pb-20 max-sm:pb-10"
     >
       <div className="absolute inset-0 -z-20 overflow-hidden">
         <motion.div

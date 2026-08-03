@@ -53,7 +53,7 @@ export default function FAQ() {
   return (
     <section
       id="faq"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
     >
       {/* Background */}
 
@@ -140,7 +140,7 @@ export default function FAQ() {
 
         {/* FAQ */}
 
-        <div className="mt-16 space-y-5">
+        <div className="mt-16 max-sm:mt-10 space-y-5">
           {faqs.map((item, index) => {
             const isOpen = active === index;
 
@@ -235,7 +235,7 @@ export default function FAQ() {
           transition={{
             delay: 0.3,
           }}
-          className="relative mt-16 overflow-hidden rounded-[32px] border border-white/70 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-8 text-center shadow-[0_30px_70px_rgba(15,23,42,.15)]"
+          className="relative mt-16 max-sm:mt-10 overflow-hidden rounded-[32px] border border-white/70 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-8 text-center shadow-[0_30px_70px_rgba(15,23,42,.15)]"
         >
           <div className="absolute -left-10 top-0 h-40 w-40 rounded-full bg-fuchsia-500/20 blur-3xl" />
 

@@ -172,7 +172,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
     >
       {/* Animated Background */}
 
@@ -268,7 +268,7 @@ export default function Services() {
 
         {/* CARDS */}
 
-        <div className="mt-16 grid gap-8 lg:grid-cols-2">
+        <div className="mt-16 max-sm:mt-10 grid gap-8 lg:grid-cols-2">
           {services.map((service, index) => {
             const Icon = service.icon;
 

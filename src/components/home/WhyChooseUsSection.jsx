@@ -61,7 +61,7 @@ export default function WhyChooseUs() {
   return (
     <section
       id="why-us"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
     >
       {/* Animated Background */}
 
@@ -159,7 +159,7 @@ export default function WhyChooseUs() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="relative mx-auto mt-16 max-w-5xl"
+          className="relative mx-auto mt-16 max-sm:mt-10 max-w-5xl"
         >
           <div className="absolute inset-0 rounded-[34px] bg-gradient-to-r from-fuchsia-500/10 via-cyan-500/10 to-emerald-500/10 blur-2xl" />
 
@@ -223,7 +223,7 @@ export default function WhyChooseUs() {
 
         {/* Feature Cards Grid */}
 
-        <div className="mt-20 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-20 max-sm:mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {features.map((item, index) => {
             const Icon = item.icon;
 

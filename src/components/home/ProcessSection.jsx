@@ -48,7 +48,7 @@ export default function Process() {
   return (
     <section
       id="process"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
     >
       {/* Background Effects */}
 
@@ -147,7 +147,7 @@ export default function Process() {
 
         {/* DESKTOP PROCESS */}
 
-        <div className="relative mt-20 hidden lg:block">
+        <div className="relative mt-20  hidden lg:block">
           <motion.div
             initial={{
               width: 0,
@@ -230,7 +230,7 @@ export default function Process() {
 
         {/* MOBILE PROCESS */}
 
-        <div className="relative mt-16 space-y-6 lg:hidden">
+        <div className="relative mt-10 space-y-6 lg:hidden">
           <div className="absolute left-8 top-0 h-full w-px bg-gradient-to-b from-fuchsia-400 via-violet-400 to-blue-400" />
 
           {process.map((step, index) => {

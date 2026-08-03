@@ -82,7 +82,7 @@ export default function Results() {
   return (
     <section
       id="results"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
     >
       {/* Background */}
 
@@ -164,7 +164,7 @@ export default function Results() {
 
         {/* Cards */}
 
-        <div className="mt-20 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-20 max-sm:mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {results.map((item, index) => {
             const Icon = item.icon;
 
@@ -244,7 +244,7 @@ export default function Results() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="relative mt-20 overflow-hidden rounded-[36px] border border-white/70 bg-white/80 p-6 shadow-[0_30px_80px_rgba(15,23,42,0.08)] backdrop-blur-2xl md:p-8 lg:p-10"
+          className="relative mt-20 max-sm:mt-10 overflow-hidden rounded-[36px] border border-white/70 bg-white/80 p-6 shadow-[0_30px_80px_rgba(15,23,42,0.08)] backdrop-blur-2xl md:p-8 lg:p-10"
         >
           {/* Top Gradient */}
 
@@ -365,29 +365,33 @@ export default function Results() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="mt-10 flex flex-col items-center justify-between gap-6 rounded-[28px] border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-6 text-white lg:flex-row"
+              className="mt-10 flex flex-col items-start justify-between gap-8 rounded-[28px] border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-5 py-6 text-white sm:px-6 md:px-8 lg:flex-row lg:items-center"
             >
-              <div>
-                <p className="text-sm uppercase tracking-[0.25em] text-cyan-300">
+              {/* Left Content */}
+
+              <div className="w-full lg:max-w-2xl">
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-300 sm:text-sm">
                   Trusted Growth Partner
                 </p>
 
-                <h4 className="mt-2 text-2xl font-bold">
+                <h4 className="mt-3 text-2xl font-bold leading-tight sm:text-3xl">
                   Focused on Business Outcomes
                 </h4>
 
-                <p className="mt-2 max-w-xl text-slate-300">
+                <p className="mt-3 max-w-xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
                   Every marketing decision is backed by strategy, analytics, and
                   continuous optimization to maximize your business growth.
                 </p>
               </div>
 
-              <div className="flex items-center gap-4">
+              {/* Right Content */}
+
+              <div className="flex w-full flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between lg:w-auto lg:justify-end">
                 <div className="flex -space-x-3">
                   {[1, 2, 3, 4].map((i) => (
                     <div
                       key={i}
-                      className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-slate-900 bg-gradient-to-r from-fuchsia-500 via-violet-500 to-cyan-500 text-sm font-bold text-white"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-900 bg-gradient-to-r from-fuchsia-500 via-violet-500 to-cyan-500 text-sm font-bold text-white shadow-lg sm:h-11 sm:w-11 lg:h-12 lg:w-12"
                     >
                       ✓
                     </div>
@@ -395,9 +399,11 @@ export default function Results() {
                 </div>
 
                 <div>
-                  <h5 className="text-lg font-bold">Growth-Driven Strategy</h5>
+                  <h5 className="text-lg font-bold sm:text-xl">
+                    Growth-Driven Strategy
+                  </h5>
 
-                  <p className="text-sm text-slate-300">
+                  <p className="mt-1 text-sm leading-6 text-slate-300">
                     Performance • Analytics • ROI
                   </p>
                 </div>

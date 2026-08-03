@@ -18,7 +18,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
     >
       {/* Background Effects */}
       <div className="absolute inset-0 -z-20 overflow-hidden">
@@ -64,7 +64,7 @@ export default function About() {
       </div>
 
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <div className="grid items-center gap-16 lg:grid-cols-2">
+        <div className="grid items-center gap-16 max-sm:gap-10 lg:grid-cols-2">
           {/* LEFT CONTENT */}
 
           <motion.div

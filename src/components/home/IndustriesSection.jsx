@@ -96,7 +96,7 @@ export default function Industries() {
   return (
     <section
       id="industries"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 lg:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
     >
       {/* Background */}
 
@@ -177,7 +177,7 @@ export default function Industries() {
 
         {/* Cards */}
 
-        <div className="mt-20 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        <div className="mt-20 max-sm:mt-10 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
           {industries.map((industry, index) => {
             const Icon = industry.icon;
 
