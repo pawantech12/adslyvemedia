@@ -249,7 +249,7 @@ export default function Services() {
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white">
               <BriefcaseBusiness size={16} />
             </span>
-            Our Services
+            What We Do
           </motion.span>
 
           <h2 className="mt-6 text-4xl font-extrabold text-slate-900 lg:text-5xl">
