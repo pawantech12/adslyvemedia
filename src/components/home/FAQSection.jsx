@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ChevronDown, HelpCircle } from "lucide-react";
+import { MessageCircleQuestion } from "lucide-react";
 
 const faqs = [
   {
@@ -103,36 +104,31 @@ export default function FAQ() {
         {/* Heading */}
 
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="text-center"
+          transition={{ duration: 0.8 }}
+          className="mx-auto max-w-3xl text-center"
         >
-          <motion.span
-            animate={{
-              y: [0, -5, 0],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-            }}
-            className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/90 px-5 py-2 text-sm font-semibold text-cyan-700 shadow-[0_12px_30px_rgba(6,182,212,0.18)] backdrop-blur-xl"
+          <motion.div
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/90 px-5 py-2 text-sm font-semibold text-cyan-700 shadow-lg backdrop-blur-xl"
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white">
-              <Sparkles size={14} />
-            </span>
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white">
+              <MessageCircleQuestion size={14} />
+            </div>
             Frequently Asked Questions
-          </motion.span>
+          </motion.div>
 
-          <h2 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-slate-900 lg:text-5xl">
+          <h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
             Everything You Need To{" "}
             <span className="bg-gradient-to-r from-fuchsia-600 via-violet-600 to-cyan-500 bg-clip-text text-transparent">
               Know
             </span>
           </h2>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 lg:text-lg">
             Have questions about our digital marketing services? Here are the
             answers to the most common questions our clients ask.
           </p>
@@ -140,40 +136,49 @@ export default function FAQ() {
 
         {/* FAQ */}
 
-        <div className="mt-16 max-sm:mt-10 space-y-5">
+        <div className="mt-12  space-y-3 sm:space-y-4">
           {faqs.map((item, index) => {
             const isOpen = active === index;
 
             return (
               <motion.div
                 key={item.question}
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{
-                  delay: index * 0.08,
+                  delay: index * 0.06,
                 }}
-                className={`group overflow-hidden rounded-[28px] border ${item.border} bg-white shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(15,23,42,.08)]`}
+                className={`group overflow-hidden rounded-[22px] sm:rounded-[24px] lg:rounded-[28px] border ${item.border} bg-white shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(15,23,42,.08)]`}
               >
                 <button
                   onClick={() => setActive(isOpen ? -1 : index)}
-                  className="flex w-full items-center gap-5 p-6 text-left"
+                  className="flex w-full items-center gap-3 sm:gap-4 p-4 sm:p-5 lg:p-6 text-left"
                 >
+                  {/* Icon */}
+
                   <div
-                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-r ${item.color} text-white shadow-lg`}
+                    className={`flex h-11 w-11 sm:h-12 sm:w-12 lg:h-14 lg:w-14 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-r ${item.color} text-white shadow-lg`}
                   >
-                    <HelpCircle size={24} />
+                    <HelpCircle
+                      size={18}
+                      className="sm:h-5 sm:w-5 lg:h-6 lg:w-6"
+                    />
                   </div>
 
-                  <div className="flex-1">
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                  {/* Content */}
+
+                  <div className="flex-1 min-w-0">
+                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] sm:px-3 sm:text-[11px] font-semibold text-slate-600">
                       {item.badge}
                     </span>
 
-                    <h3 className="mt-3 text-lg font-bold text-slate-900 lg:text-xl">
+                    <h3 className="mt-2 sm:mt-3 text-[15px] sm:text-base lg:text-lg font-bold leading-6 lg:leading-7 text-slate-900">
                       {item.question}
                     </h3>
                   </div>
+
+                  {/* Toggle */}
 
                   <motion.div
                     animate={{
@@ -182,9 +187,9 @@ export default function FAQ() {
                     transition={{
                       duration: 0.3,
                     }}
-                    className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r ${item.color} text-white`}
+                    className={`flex h-9 w-9 sm:h-10 sm:w-10 lg:h-11 lg:w-11 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-r ${item.color} text-white`}
                   >
-                    <ChevronDown size={20} />
+                    <ChevronDown size={18} className="sm:h-5 sm:w-5" />
                   </motion.div>
                 </button>
 
@@ -207,13 +212,13 @@ export default function FAQ() {
                         duration: 0.35,
                       }}
                     >
-                      <div className="border-t border-slate-100 px-6 pb-6 pt-5">
-                        <div className="flex gap-4">
+                      <div className="border-t border-slate-100 px-4 sm:px-5 lg:px-6 pb-4 sm:pb-5 lg:pb-6 pt-4 sm:pt-5">
+                        <div className="flex gap-3 sm:gap-4">
                           <div
-                            className={`mt-1 h-full w-1 rounded-full bg-gradient-to-b ${item.color}`}
+                            className={`mt-1 w-1 rounded-full bg-gradient-to-b ${item.color}`}
                           />
 
-                          <p className="leading-8 text-slate-600">
+                          <p className="text-sm sm:text-[15px] lg:text-base leading-7 text-slate-600">
                             {item.answer}
                           </p>
                         </div>

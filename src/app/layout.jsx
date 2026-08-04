@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTopButton";
 import LeadPopup from "@/components/LeadPopup";
+import WhatsappButton from "@/components/WhatsappButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -99,7 +100,8 @@ export default function RootLayout({ children }) {
         <Navbar />
 
         <main>{children}</main>
-        <ScrollToTop />
+        <WhatsappButton />
+        {/* <ScrollToTop /> */}
         <LeadPopup />
         <Footer />
       </body>

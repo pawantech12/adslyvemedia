@@ -94,8 +94,8 @@ export default function Footer() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:70px_70px]" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-6 md:py-12 lg:px-8">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
 
           <motion.div
@@ -106,9 +106,9 @@ export default function Footer() {
           >
             <Link
               href="/"
-              className="group bg-white w-fit rounded-md p-2 relative flex items-center transition-all duration-500 hover:scale-[1.02]"
+              className="group relative flex w-fit rounded-md bg-white p-2 transition-all duration-500 hover:scale-[1.02]"
             >
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-300/20 via-fuchsia-300/20 to-emerald-300/20 blur-2xl opacity-0 transition duration-500 group-hover:opacity-100" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-300/20 via-fuchsia-300/20 to-emerald-300/20 opacity-0 blur-2xl transition duration-500 group-hover:opacity-100" />
 
               <Image
                 src="/logo-dark.png"
@@ -117,11 +117,11 @@ export default function Footer() {
                 height={0}
                 sizes="100vw"
                 priority
-                className="relative h-20 w-auto object-contain"
+                className="relative h-16 w-auto object-contain sm:h-18 lg:h-20"
               />
             </Link>
 
-            <p className="mt-6 max-w-sm leading-8 text-slate-400">
+            <p className="mt-4 max-w-sm text-sm leading-7 text-slate-400">
               Helping businesses grow through data-driven digital marketing,
               SEO, paid advertising, and measurable performance strategies.
             </p>
@@ -135,18 +135,18 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
-            <h3 className="mb-6 text-lg font-bold text-white">Quick Links</h3>
+            <h3 className="mb-4 text-lg font-bold text-white">Quick Links</h3>
 
-            <div className="space-y-4">
+            <div className="space-y-2.5">
               {quickLinks.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="group flex items-center gap-3 text-slate-400 transition hover:text-cyan-400"
+                  className="group flex items-center gap-2.5 text-sm text-slate-400 transition hover:text-cyan-400"
                 >
                   <ArrowUpRight
-                    size={16}
-                    className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                    size={15}
+                    className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
                   />
 
                   {item.name}
@@ -163,13 +163,13 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <h3 className="mb-6 text-lg font-bold text-white">Services</h3>
+            <h3 className="mb-4 text-lg font-bold text-white">Services</h3>
 
-            <div className="space-y-4">
+            <div className="space-y-2.5">
               {services.map((service) => (
                 <div
                   key={service}
-                  className="group flex cursor-pointer items-center gap-3 text-slate-400 transition hover:text-fuchsia-400"
+                  className="group flex cursor-pointer items-center gap-2.5 text-sm text-slate-400 transition hover:text-fuchsia-400"
                 >
                   <span className="h-2 w-2 rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-500 transition group-hover:scale-125" />
 
@@ -187,9 +187,9 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <h3 className="mb-6 text-lg font-bold text-white">Follow Us</h3>
+            <h3 className="mb-4 text-lg font-bold text-white">Follow Us</h3>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               {socialLinks.map((item) => {
                 const Icon = item.icon;
 
@@ -197,13 +197,13 @@ export default function Footer() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl transition-all duration-300 ${item.color}`}
+                    className={`group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3 backdrop-blur-xl transition-all duration-300 ${item.color}`}
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10">
-                      <Icon size={20} />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                      <Icon size={18} />
                     </div>
 
-                    <span className="font-medium">{item.name}</span>
+                    <span className="text-sm font-medium">{item.name}</span>
                   </Link>
                 );
               })}
@@ -213,13 +213,13 @@ export default function Footer() {
 
         {/* Bottom */}
 
-        <div className="mt-14 border-t border-white/10 pt-8">
-          <div className="flex flex-col items-center justify-between gap-5 text-center md:flex-row">
+        <div className="mt-8 border-t border-white/10 pt-5 sm:mt-10 sm:pt-6">
+          <div className="flex flex-col items-center justify-between gap-3 text-center md:flex-row">
             <p className="text-sm text-slate-400">
               © {new Date().getFullYear()} ADSLYVE MEDIA. All rights reserved.
             </p>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <span className="h-2.5 w-2.5 rounded-full bg-fuchsia-500" />
               <span className="h-2.5 w-2.5 rounded-full bg-violet-500" />
               <span className="h-2.5 w-2.5 rounded-full bg-cyan-400" />

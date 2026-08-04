@@ -10,6 +10,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
+import { MessageCircleMore } from "lucide-react";
 
 const contactInfo = [
   {
@@ -95,36 +96,31 @@ export default function Contact() {
         {/* Heading */}
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.8 }}
           className="mx-auto max-w-3xl text-center"
         >
-          <motion.span
-            animate={{
-              y: [0, -5, 0],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-            }}
-            className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/90 px-5 py-2 text-sm font-semibold text-cyan-700 shadow-[0_12px_30px_rgba(6,182,212,.18)] backdrop-blur-xl"
+          <motion.div
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/90 px-5 py-2 text-sm font-semibold text-cyan-700 shadow-lg backdrop-blur-xl"
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white">
-              <Sparkles size={14} />
-            </span>
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white">
+              <MessageCircleMore size={14} />
+            </div>
             Contact Us
-          </motion.span>
+          </motion.div>
 
-          <h2 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-slate-900 lg:text-5xl">
+          <h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
             Let's{" "}
             <span className="bg-gradient-to-r from-fuchsia-600 via-violet-600 to-cyan-500 bg-clip-text text-transparent">
               Connect
             </span>
           </h2>
 
-          <p className="mt-8 text-lg leading-8 text-slate-600">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 lg:text-lg">
             Whether you're looking to increase traffic, generate more leads, or
             improve your digital presence, we're here to help.
           </p>
@@ -137,7 +133,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="relative mt-12 overflow-hidden rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-[0_30px_80px_rgba(15,23,42,.08)] backdrop-blur-2xl sm:mt-14 sm:rounded-[32px] sm:p-6 lg:mt-16 lg:rounded-[36px] lg:p-10"
+          className="relative mt-12 overflow-hidden rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-[0_30px_80px_rgba(15,23,42,.08)] backdrop-blur-2xl sm:mt-14 sm:rounded-[32px] sm:p-6 lg:rounded-[36px] lg:p-10"
         >
           {/* Top Gradient */}
 
@@ -151,7 +147,7 @@ export default function Contact() {
 
           {/* Contact Cards */}
 
-          <div className="relative grid gap-4 sm:gap-5 md:grid-cols-3 lg:gap-6">
+          <div className="relative grid gap-3 sm:gap-4 md:grid-cols-3 lg:gap-5">
             {contactInfo.map((item, index) => {
               const Icon = item.icon;
 
@@ -161,7 +157,7 @@ export default function Contact() {
                   href={item.href}
                   initial={{
                     opacity: 0,
-                    y: 25,
+                    y: 20,
                   }}
                   whileInView={{
                     opacity: 1,
@@ -171,55 +167,58 @@ export default function Contact() {
                     once: true,
                   }}
                   transition={{
-                    delay: index * 0.12,
+                    delay: index * 0.1,
                   }}
                   whileHover={{
-                    y: -8,
+                    y: -6,
                   }}
-                  className={`group relative overflow-hidden rounded-[22px] border ${item.border} bg-white p-5 shadow-sm transition-all duration-500 hover:shadow-xl sm:rounded-[24px] sm:p-6 lg:rounded-[28px] lg:p-7`}
+                  className={`group relative overflow-hidden rounded-[18px] border ${item.border} bg-white px-4 py-4 shadow-sm transition-all duration-500 hover:shadow-lg sm:rounded-[20px] sm:px-5 sm:py-5 lg:rounded-[22px] lg:px-6 lg:py-5`}
                 >
                   {/* Left Gradient */}
 
                   <div
-                    className={`absolute left-0 top-0 h-full w-1 bg-gradient-to-b ${item.gradient}`}
+                    className={`absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b ${item.gradient}`}
                   />
 
                   {/* Hover Glow */}
 
                   <div
-                    className={`absolute -right-10 -top-10 h-32 w-32 rounded-full ${item.bg} opacity-0 blur-3xl transition duration-500 group-hover:opacity-100`}
+                    className={`absolute -right-8 -top-8 h-24 w-24 rounded-full ${item.bg} opacity-0 blur-3xl transition duration-500 group-hover:opacity-100`}
                   />
 
                   {/* Icon */}
 
                   <div
-                    className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r ${item.gradient} text-white shadow-lg transition duration-500 group-hover:scale-110 group-hover:rotate-6 sm:h-16 sm:w-16`}
+                    className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r ${item.gradient} text-white shadow-md transition duration-500 group-hover:scale-110 group-hover:rotate-6 sm:h-12 sm:w-12 lg:h-14 lg:w-14`}
                   >
-                    <Icon size={26} className="sm:h-7 sm:w-7" />
+                    <Icon
+                      size={20}
+                      className="sm:h-[22px] sm:w-[22px] lg:h-6 lg:w-6"
+                    />
                   </div>
 
                   {/* Title */}
 
-                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sm:mt-6 sm:text-sm">
+                  <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500 sm:mt-4 sm:text-[11px]">
                     {item.title}
                   </p>
 
                   {/* Value */}
 
-                  <h3 className="mt-2 break-words text-lg font-bold leading-7 text-slate-900 sm:mt-3 sm:text-xl sm:leading-8">
+                  <h3 className="mt-1 break-words text-base font-bold leading-6 text-slate-900 sm:mt-2 sm:text-lg sm:leading-7">
                     {item.value}
                   </h3>
 
                   {/* Bottom */}
 
-                  <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4 sm:mt-6 sm:pt-5">
-                    <div className="flex gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-cyan-400" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-fuchsia-500" />
+                  <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 sm:mt-5 sm:pt-4">
+                    <div className="flex gap-1.5">
+                      <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                      <span className="h-2 w-2 rounded-full bg-cyan-400" />
+                      <span className="h-2 w-2 rounded-full bg-fuchsia-500" />
                     </div>
 
-                    <ArrowRight className="h-5 w-5 text-slate-400 transition duration-300 group-hover:translate-x-2 group-hover:text-cyan-600" />
+                    <ArrowRight className="h-4 w-4 text-slate-400 transition duration-300 group-hover:translate-x-1.5 group-hover:text-cyan-600 sm:h-[18px] sm:w-[18px]" />
                   </div>
                 </motion.a>
               );
@@ -243,17 +242,17 @@ export default function Contact() {
             transition={{
               delay: 0.4,
             }}
-            className="mt-8 overflow-hidden rounded-[24px] bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-6 sm:mt-10 sm:rounded-[28px] sm:p-8"
+            className="mt-6 overflow-hidden rounded-[22px] bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-5 sm:mt-8 sm:rounded-[24px] sm:p-6 lg:p-7"
           >
-            <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center lg:gap-8">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
               {/* Left */}
 
-              <div>
-                <h3 className="text-2xl font-bold text-white sm:text-3xl">
+              <div className="flex-1">
+                <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl lg:text-3xl">
                   Ready to Grow Faster?
                 </h3>
 
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:mt-3 sm:text-[15px] sm:leading-7 lg:text-base lg:leading-7">
                   Schedule a free consultation and discover how AdsLyve Media
                   can help your business generate more leads, increase revenue,
                   and build a stronger digital presence.
@@ -264,10 +263,10 @@ export default function Contact() {
 
               <Link
                 href="#"
-                className="group inline-flex h-12 w-full items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500 px-7 text-sm font-semibold text-white shadow-[0_20px_50px_rgba(99,102,241,.35)] transition-all duration-500 hover:-translate-y-1 hover:scale-[1.03] sm:h-14 sm:w-auto sm:px-8 sm:text-base"
+                className="group inline-flex h-11 w-full items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500 px-6 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(99,102,241,.30)] transition-all duration-500 hover:-translate-y-1 hover:scale-[1.02] sm:h-12 sm:w-auto sm:px-7 sm:text-[15px] lg:h-13 lg:px-8 lg:text-base"
               >
                 Get In Touch
-                <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-2" />
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2 sm:h-5 sm:w-5" />
               </Link>
             </div>
           </motion.div>

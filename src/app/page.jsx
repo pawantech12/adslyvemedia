@@ -18,8 +18,8 @@ export default function Home() {
       <TrustedGrowthPartner />
       <About />
       <Services />
-      <Process />
-      <WhyChooseUs />
+      {/* <Process /> */}
+      {/* <WhyChooseUs /> */}
       <Industries />
       <Results />
       <FAQ />

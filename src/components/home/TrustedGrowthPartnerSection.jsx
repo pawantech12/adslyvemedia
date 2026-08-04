@@ -122,7 +122,7 @@ export default function TrustedGrowthPartner() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="mx-auto max-w-4xl text-center"
+          className="mx-auto max-w-3xl text-center"
         >
           <motion.span
             animate={{ y: [0, -4, 0] }}
@@ -130,7 +130,7 @@ export default function TrustedGrowthPartner() {
               duration: 3,
               repeat: Infinity,
             }}
-            className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/90 px-5 py-2 text-sm font-semibold text-cyan-700 shadow-[0_12px_30px_rgba(6,182,212,0.18)] backdrop-blur-xl"
+            className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/90 px-5 py-2 text-sm font-semibold text-cyan-700 shadow-lg backdrop-blur-xl"
           >
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white">
               <Handshake size={14} />
@@ -138,15 +138,14 @@ export default function TrustedGrowthPartner() {
             Trusted Growth Partner
           </motion.span>
 
-          <h2 className="mt-6 text-4xl font-extrabold leading-tight text-slate-900 lg:text-5xl">
+          <h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
             Your Partner in
-            <span className="bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
-              {" "}
+            <span className="block bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
               Sustainable Business Growth
             </span>
           </h2>
 
-          <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-slate-600">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 lg:text-lg">
             At AdsLyve Media, we don't believe in guesswork. Every campaign is
             backed by research, analytics, and optimization to help your
             business achieve sustainable growth. Whether you're a startup
@@ -156,26 +155,30 @@ export default function TrustedGrowthPartner() {
 
           <motion.div
             whileHover={{ y: -4 }}
-            className="relative mt-10 overflow-hidden rounded-[32px] border border-white/60 bg-white/80 p-8 shadow-[0_25px_70px_rgba(15,23,42,0.08)] backdrop-blur-2xl"
+            className="relative mt-8 overflow-hidden rounded-[28px] border border-white/60 bg-white/80 p-5 shadow-[0_20px_55px_rgba(15,23,42,0.08)] backdrop-blur-2xl sm:mt-10 sm:rounded-[30px] sm:p-6 lg:p-7"
           >
+            {/* Top Gradient */}
+
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-fuchsia-600 via-violet-600 to-cyan-500" />
+
+            {/* Background Glow */}
 
             <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-cyan-400/15 blur-3xl" />
 
             <div className="absolute -left-10 bottom-0 h-36 w-36 rounded-full bg-fuchsia-400/15 blur-3xl" />
 
-            <h3 className="text-2xl font-bold text-slate-900">
+            <h3 className="text-xl font-bold text-slate-900 sm:text-2xl">
               Why Choose AdsLyve?
             </h3>
 
-            <p className="mt-4 text-lg leading-8 text-slate-600">
+            <p className="mt-3 text-sm leading-7 text-slate-600 sm:mt-4 sm:text-base lg:text-lg">
               We combine data, creativity, and proven marketing strategies to
               deliver consistent business growth while keeping complete
               transparency throughout every campaign.
             </p>
           </motion.div>
         </motion.div>
-        <div className="mt-20 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
           {features.map((item, index) => {
             const Icon = item.icon;
 
@@ -189,18 +192,24 @@ export default function TrustedGrowthPartner() {
                   duration: 0.55,
                   delay: index * 0.08,
                 }}
-                whileHover={{ y: -8 }}
-                className={`group relative overflow-hidden rounded-[32px] border border-slate-200 bg-white/85 p-7 backdrop-blur-xl transition-all duration-500 hover:shadow-[0_28px_70px_rgba(15,23,42,0.10)] ${item.border}`}
+                whileHover={{ y: -6 }}
+                className={`group relative overflow-hidden rounded-[24px] border border-slate-200 bg-white/85 p-4 sm:p-5 lg:p-6 backdrop-blur-xl transition-all duration-500 hover:shadow-[0_22px_55px_rgba(15,23,42,0.08)] ${item.border}`}
               >
+                {/* Top Border */}
+
                 <div
                   className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${item.color}`}
                 />
 
+                {/* Hover Glow */}
+
                 <div
-                  className={`absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gradient-to-br ${item.light} opacity-0 blur-3xl transition-all duration-500 group-hover:opacity-100`}
+                  className={`absolute -right-16 -top-16 h-32 w-32 rounded-full bg-gradient-to-br ${item.light} opacity-0 blur-3xl transition-all duration-500 group-hover:opacity-100`}
                 />
 
-                <div className="absolute -left-10 bottom-0 h-32 w-32 rounded-full bg-slate-100/70 blur-3xl transition-all duration-500 group-hover:bg-white" />
+                <div className="absolute -left-10 bottom-0 h-24 w-24 rounded-full bg-slate-100/70 blur-3xl transition-all duration-500 group-hover:bg-white" />
+
+                {/* Top */}
 
                 <div className="flex items-start justify-between">
                   <motion.div
@@ -208,36 +217,40 @@ export default function TrustedGrowthPartner() {
                       rotate: 8,
                       scale: 1.08,
                     }}
-                    className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${item.color} text-white shadow-xl`}
+                    className={`flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl bg-gradient-to-r ${item.color} text-white shadow-lg`}
                   >
-                    <Icon size={28} />
+                    <Icon size={22} className="sm:h-6 sm:w-6" />
                   </motion.div>
 
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-sm font-bold text-slate-400 transition-all duration-300 group-hover:border-cyan-200 group-hover:bg-cyan-50 group-hover:text-cyan-700">
+                  <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-xs sm:text-sm font-bold text-slate-400 transition-all duration-300 group-hover:border-cyan-200 group-hover:bg-cyan-50 group-hover:text-cyan-700">
                     0{index + 1}
                   </div>
                 </div>
 
-                <div className="mt-7">
-                  <h3 className="text-xl font-bold leading-tight text-slate-900 transition-colors duration-300 group-hover:text-cyan-700">
+                {/* Content */}
+
+                <div className="mt-4 sm:mt-5">
+                  <h3 className="text-lg sm:text-xl font-bold leading-snug text-slate-900 transition-colors duration-300 group-hover:text-cyan-700">
                     {item.title}
                   </h3>
 
-                  <p className="mt-4 text-[15px] leading-7 text-slate-600">
+                  <p className="mt-2 sm:mt-3 text-sm sm:text-[15px] leading-6 text-slate-600">
                     {item.description}
                   </p>
                 </div>
 
-                <div className="mt-8 flex items-center justify-between border-t border-slate-100 pt-5">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 transition-transform duration-300 group-hover:scale-125" />
+                {/* Bottom */}
 
-                    <span className="h-2.5 w-2.5 rounded-full bg-cyan-400 transition-transform duration-300 delay-75 group-hover:scale-125" />
+                <div className="mt-5 sm:mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="h-2 w-2 rounded-full bg-emerald-400 transition-transform duration-300 group-hover:scale-125" />
 
-                    <span className="h-2.5 w-2.5 rounded-full bg-fuchsia-500 transition-transform duration-300 delay-150 group-hover:scale-125" />
+                    <span className="h-2 w-2 rounded-full bg-cyan-400 transition-transform duration-300 delay-75 group-hover:scale-125" />
+
+                    <span className="h-2 w-2 rounded-full bg-fuchsia-500 transition-transform duration-300 delay-150 group-hover:scale-125" />
                   </div>
 
-                  <div className="h-2 w-20 overflow-hidden rounded-full bg-slate-200">
+                  <div className="h-1.5 w-14 sm:w-16 lg:w-20 overflow-hidden rounded-full bg-slate-200">
                     <motion.div
                       initial={{ width: 0 }}
                       whileInView={{ width: "100%" }}

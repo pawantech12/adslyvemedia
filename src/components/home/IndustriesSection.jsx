@@ -157,19 +157,19 @@ export default function Industries() {
             className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/90 px-5 py-2 text-sm font-semibold text-cyan-700 shadow-lg backdrop-blur-xl"
           >
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white">
-              <Sparkles size={14} />
+              <Building2 size={14} />
             </div>
             Industries We Serve
           </motion.div>
 
-          <h2 className="mt-6 text-4xl font-extrabold leading-tight text-slate-900 lg:text-5xl">
+          <h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
             Helping Businesses Across
             <span className="block bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 bg-clip-text text-transparent">
               Every Industry Grow Faster
             </span>
           </h2>
 
-          <p className="mt-6 text-lg leading-8 text-slate-600">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 lg:text-lg">
             We create customized digital marketing strategies tailored to the
             unique goals, audience, and challenges of every industry.
           </p>
@@ -177,7 +177,7 @@ export default function Industries() {
 
         {/* Cards */}
 
-        <div className="mt-20 max-sm:mt-10 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
           {industries.map((industry, index) => {
             const Icon = industry.icon;
 
@@ -203,7 +203,7 @@ export default function Industries() {
                   y: -8,
                   scale: 1.03,
                 }}
-                className="group relative overflow-hidden rounded-[26px] border border-white/70 bg-white/80 p-6 backdrop-blur-xl shadow-[0_15px_40px_rgba(15,23,42,.08)] transition-all duration-500 hover:border-cyan-200 hover:shadow-[0_20px_55px_rgba(6,182,212,.15)]"
+                className="group relative overflow-hidden rounded-2xl border border-white/70 bg-white/80 p-4 sm:p-5 backdrop-blur-xl shadow-[0_12px_35px_rgba(15,23,42,.08)] transition-all duration-500 hover:border-cyan-200 hover:shadow-[0_18px_45px_rgba(6,182,212,.15)]"
               >
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${industry.bg} opacity-0 transition duration-500 group-hover:opacity-100`}
@@ -215,18 +215,18 @@ export default function Industries() {
 
                 <div className="relative">
                   <div
-                    className={`mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${industry.color} text-white shadow-lg transition duration-500 group-hover:rotate-6 group-hover:scale-110`}
+                    className={`mx-auto flex h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-r ${industry.color} text-white shadow-lg transition duration-500 group-hover:rotate-6 group-hover:scale-110`}
                   >
-                    <Icon size={30} />
+                    <Icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
                   </div>
 
-                  <h3 className="mt-6 text-center text-lg font-bold leading-snug text-slate-900">
+                  <h3 className="mt-4 text-center text-sm font-semibold leading-6 text-slate-900 sm:text-base lg:text-[15px]">
                     {industry.title}
                   </h3>
 
-                  <div className="mt-5 flex justify-center">
+                  <div className="mt-3 flex justify-center">
                     <div
-                      className={`h-1 w-12 rounded-full bg-gradient-to-r ${industry.color} transition-all duration-500 group-hover:w-20`}
+                      className={`h-1 w-10 rounded-full bg-gradient-to-r ${industry.color} transition-all duration-500 group-hover:w-16`}
                     />
                   </div>
                 </div>

@@ -222,7 +222,7 @@ export default function Services() {
         <motion.div
           initial={{
             opacity: 0,
-            y: 30,
+            y: 40,
           }}
           whileInView={{
             opacity: 1,
@@ -236,7 +236,7 @@ export default function Services() {
           }}
           className="mx-auto max-w-3xl text-center"
         >
-          <motion.span
+          <motion.div
             animate={{
               y: [0, -5, 0],
             }}
@@ -246,21 +246,20 @@ export default function Services() {
             }}
             className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/90 px-5 py-2 text-sm font-semibold text-cyan-700 shadow-lg backdrop-blur-xl"
           >
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white">
-              <BriefcaseBusiness size={16} />
-            </span>
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white">
+              <BriefcaseBusiness size={14} />
+            </div>
             What We Do
-          </motion.span>
+          </motion.div>
 
-          <h2 className="mt-6 text-4xl font-extrabold text-slate-900 lg:text-5xl">
+          <h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
             Complete Digital Growth
-            <span className="bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 bg-clip-text text-transparent">
-              {" "}
+            <span className="block bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 bg-clip-text text-transparent">
               Solutions
             </span>
           </h2>
 
-          <p className="mt-6 text-lg leading-8 text-slate-600">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 lg:text-lg">
             From SEO and paid advertising to web development and social media,
             we provide everything your business needs to grow online.
           </p>
@@ -268,7 +267,7 @@ export default function Services() {
 
         {/* CARDS */}
 
-        <div className="mt-16 max-sm:mt-10 grid gap-8 lg:grid-cols-2">
+        <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {services.map((service, index) => {
             const Icon = service.icon;
 
@@ -291,13 +290,19 @@ export default function Services() {
                   delay: index * 0.08,
                 }}
                 whileHover={{
-                  y: -10,
+                  y: -8,
                 }}
-                className="group relative overflow-hidden rounded-[30px] border border-white/70 bg-white/80 p-6 shadow-[0_25px_70px_rgba(15,23,42,.08)] backdrop-blur-xl transition-all duration-500"
+                className="group relative overflow-hidden rounded-[26px] border border-white/70 bg-white/80 p-4 sm:p-5 lg:p-6 shadow-[0_20px_55px_rgba(15,23,42,.08)] backdrop-blur-xl transition-all duration-500"
               >
+                {/* Top Border */}
+
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500" />
 
-                <div className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-gradient-to-br from-fuchsia-200 to-blue-200 opacity-0 blur-3xl transition duration-500 group-hover:opacity-100" />
+                {/* Hover Glow */}
+
+                <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gradient-to-br from-fuchsia-200 to-blue-200 opacity-0 blur-3xl transition duration-500 group-hover:opacity-100" />
+
+                {/* Icon */}
 
                 <motion.div
                   animate={{
@@ -307,42 +312,50 @@ export default function Services() {
                     duration: 4,
                     repeat: Infinity,
                   }}
-                  className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-r ${service.color} text-white shadow-xl`}
+                  className={`flex h-14 w-14 sm:h-15 sm:w-15 items-center justify-center rounded-2xl bg-gradient-to-r ${service.color} text-white shadow-xl`}
                 >
-                  <Icon size={30} />
+                  <Icon size={26} />
                 </motion.div>
 
-                <h3 className="mt-6 text-2xl font-bold text-slate-900">
+                {/* Title */}
+
+                <h3 className="mt-4 text-xl font-bold leading-tight text-slate-900 lg:text-2xl">
                   {service.title}
                 </h3>
 
-                <p className="mt-2 font-semibold text-fuchsia-600">
+                {/* Subtitle */}
+
+                <p className="mt-1 text-sm font-semibold text-fuchsia-600">
                   {service.subtitle}
                 </p>
 
-                <p className="mt-4 leading-7 text-slate-600">
+                {/* Description */}
+
+                <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-[15px] sm:leading-7">
                   {service.description}
                 </p>
 
-                <div className="mt-6 rounded-2xl border border-slate-100 bg-slate-50/80 p-5">
-                  <h4 className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-800">
+                {/* Included */}
+
+                <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
+                  <h4 className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-800">
                     What's Included
                   </h4>
 
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="grid gap-2.5 sm:grid-cols-2">
                     {service.features.map((feature) => (
                       <motion.div
                         key={feature}
                         whileHover={{
-                          x: 5,
+                          x: 4,
                         }}
-                        className="flex items-center gap-3"
+                        className="flex items-center gap-2.5"
                       >
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-blue-500 text-white">
-                          <Check size={13} />
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-blue-500 text-white">
+                          <Check size={11} />
                         </span>
 
-                        <span className="text-sm text-slate-700">
+                        <span className="text-[13px] leading-5 text-slate-700 sm:text-sm">
                           {feature}
                         </span>
                       </motion.div>
