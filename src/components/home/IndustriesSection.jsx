@@ -96,7 +96,7 @@ export default function Industries() {
   return (
     <section
       id="industries"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-10"
     >
       {/* Background */}
 

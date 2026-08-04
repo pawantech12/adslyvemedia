@@ -24,6 +24,7 @@ const services = [
   "Google Ads",
   "Meta Ads",
   "Digital Marketing",
+  "Web & App Development",
 ];
 
 const socialLinks = [
@@ -53,47 +54,6 @@ const socialLinks = [
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden bg-slate-950 text-white">
-      {/* Background Effects */}
-
-      <div className="absolute inset-0 -z-20 overflow-hidden">
-        <motion.div
-          animate={{
-            x: [0, 80, 0],
-            y: [0, 60, 0],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-          }}
-          className="absolute -left-24 top-0 h-[420px] w-[420px] rounded-full bg-fuchsia-600/15 blur-[120px]"
-        />
-
-        <motion.div
-          animate={{
-            x: [0, -70, 0],
-            y: [0, 80, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-          }}
-          className="absolute right-0 top-10 h-[450px] w-[450px] rounded-full bg-cyan-500/15 blur-[130px]"
-        />
-
-        <motion.div
-          animate={{
-            scale: [1, 1.15, 1],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-          }}
-          className="absolute bottom-0 left-1/2 h-[350px] w-[350px] -translate-x-1/2 rounded-full bg-violet-500/15 blur-[120px]"
-        />
-
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:70px_70px]" />
-      </div>
-
       <div className="mx-auto max-w-7xl px-5 py-10 sm:px-6 md:py-12 lg:px-8">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
@@ -189,7 +149,7 @@ export default function Footer() {
           >
             <h3 className="mb-4 text-lg font-bold text-white">Follow Us</h3>
 
-            <div className="space-y-3">
+            <div className="flex items-center gap-2.5">
               {socialLinks.map((item) => {
                 const Icon = item.icon;
 
@@ -197,13 +157,13 @@ export default function Footer() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`group flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3 backdrop-blur-xl transition-all duration-300 ${item.color}`}
+                    aria-label={item.name}
+                    className={`group flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 ${item.color}`}
                   >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                      <Icon size={18} />
-                    </div>
-
-                    <span className="text-sm font-medium">{item.name}</span>
+                    <Icon
+                      size={18}
+                      className="transition-transform duration-300 group-hover:scale-110"
+                    />
                   </Link>
                 );
               })}

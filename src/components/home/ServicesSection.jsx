@@ -172,7 +172,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-10"
     >
       {/* Animated Background */}
 
@@ -267,7 +267,7 @@ export default function Services() {
 
         {/* CARDS */}
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-2">
+        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {services.map((service, index) => {
             const Icon = service.icon;
 
@@ -276,7 +276,7 @@ export default function Services() {
                 key={service.title}
                 initial={{
                   opacity: 0,
-                  y: 40,
+                  y: 30,
                 }}
                 whileInView={{
                   opacity: 1,
@@ -286,13 +286,13 @@ export default function Services() {
                   once: true,
                 }}
                 transition={{
-                  duration: 0.6,
-                  delay: index * 0.08,
+                  duration: 0.5,
+                  delay: index * 0.06,
                 }}
                 whileHover={{
-                  y: -8,
+                  y: -6,
                 }}
-                className="group relative overflow-hidden rounded-[26px] border border-white/70 bg-white/80 p-4 sm:p-5 lg:p-6 shadow-[0_20px_55px_rgba(15,23,42,.08)] backdrop-blur-xl transition-all duration-500"
+                className="group relative overflow-hidden rounded-[22px] border border-white/70 bg-white/90 p-5 shadow-[0_18px_45px_rgba(15,23,42,.08)] backdrop-blur-xl transition-all duration-500"
               >
                 {/* Top Border */}
 
@@ -300,62 +300,62 @@ export default function Services() {
 
                 {/* Hover Glow */}
 
-                <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gradient-to-br from-fuchsia-200 to-blue-200 opacity-0 blur-3xl transition duration-500 group-hover:opacity-100" />
+                <div className="absolute -right-14 -top-14 h-32 w-32 rounded-full bg-gradient-to-br from-fuchsia-200 to-blue-200 opacity-0 blur-3xl transition duration-500 group-hover:opacity-100" />
 
                 {/* Icon */}
 
                 <motion.div
                   animate={{
-                    y: [0, -5, 0],
+                    y: [0, -4, 0],
                   }}
                   transition={{
                     duration: 4,
                     repeat: Infinity,
                   }}
-                  className={`flex h-14 w-14 sm:h-15 sm:w-15 items-center justify-center rounded-2xl bg-gradient-to-r ${service.color} text-white shadow-xl`}
+                  className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-r ${service.color} text-white shadow-lg`}
                 >
-                  <Icon size={26} />
+                  <Icon size={24} />
                 </motion.div>
 
                 {/* Title */}
 
-                <h3 className="mt-4 text-xl font-bold leading-tight text-slate-900 lg:text-2xl">
+                <h3 className="mt-4 text-xl font-bold leading-tight text-slate-900">
                   {service.title}
                 </h3>
 
                 {/* Subtitle */}
 
-                <p className="mt-1 text-sm font-semibold text-fuchsia-600">
+                <p className="mt-1.5 text-sm font-semibold text-fuchsia-600">
                   {service.subtitle}
                 </p>
 
                 {/* Description */}
 
-                <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-[15px] sm:leading-7">
+                <p className="mt-3 text-[15px] leading-6 text-slate-600">
                   {service.description}
                 </p>
 
                 {/* Included */}
 
-                <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
-                  <h4 className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-800">
+                <div className="mt-4 rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
+                  <h4 className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-800">
                     What's Included
                   </h4>
 
-                  <div className="grid gap-2.5 sm:grid-cols-2">
+                  <div className="grid gap-2">
                     {service.features.map((feature) => (
                       <motion.div
                         key={feature}
                         whileHover={{
-                          x: 4,
+                          x: 2,
                         }}
-                        className="flex items-center gap-2.5"
+                        className="flex items-center gap-2"
                       >
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-blue-500 text-white">
-                          <Check size={11} />
+                        <span className="flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-blue-500 text-white">
+                          <Check size={10} />
                         </span>
 
-                        <span className="text-[13px] leading-5 text-slate-700 sm:text-sm">
+                        <span className="text-sm leading-5 text-slate-700">
                           {feature}
                         </span>
                       </motion.div>

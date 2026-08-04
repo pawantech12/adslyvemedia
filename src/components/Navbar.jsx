@@ -34,11 +34,6 @@ const navLinks = [
     icon: BriefcaseBusiness,
   },
   {
-    name: "Process",
-    href: "#process",
-    icon: Workflow,
-  },
-  {
     name: "Industries",
     href: "#industries",
     icon: Building2,

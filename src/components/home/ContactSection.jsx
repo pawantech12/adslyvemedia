@@ -46,7 +46,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py- py-10"
     >
       {/* Background */}
 
@@ -133,21 +133,11 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="relative mt-12 overflow-hidden rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-[0_30px_80px_rgba(15,23,42,.08)] backdrop-blur-2xl sm:mt-14 sm:rounded-[32px] sm:p-6 lg:rounded-[36px] lg:p-10"
+          className="relative mt-12 overflow-hidden sm:mt-14 "
         >
-          {/* Top Gradient */}
-
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500" />
-
-          {/* Background Glow */}
-
-          <div className="absolute -left-20 top-0 h-60 w-60 rounded-full bg-fuchsia-400/15 blur-[100px]" />
-
-          <div className="absolute -right-20 bottom-0 h-60 w-60 rounded-full bg-cyan-400/15 blur-[100px]" />
-
           {/* Contact Cards */}
 
-          <div className="relative grid gap-3 sm:gap-4 md:grid-cols-3 lg:gap-5">
+          <div className="relative grid gap-3 md:grid-cols-3 lg:gap-4">
             {contactInfo.map((item, index) => {
               const Icon = item.icon;
 
@@ -170,9 +160,9 @@ export default function Contact() {
                     delay: index * 0.1,
                   }}
                   whileHover={{
-                    y: -6,
+                    y: -5,
                   }}
-                  className={`group relative overflow-hidden rounded-[18px] border ${item.border} bg-white px-4 py-4 shadow-sm transition-all duration-500 hover:shadow-lg sm:rounded-[20px] sm:px-5 sm:py-5 lg:rounded-[22px] lg:px-6 lg:py-5`}
+                  className={`group relative overflow-hidden rounded-[18px] border ${item.border} bg-white px-4 py-3.5 shadow-sm transition-all duration-500 hover:shadow-lg sm:rounded-[20px] sm:px-5 sm:py-4 lg:rounded-[22px] lg:px-5 lg:py-4`}
                 >
                   {/* Left Gradient */}
 
@@ -199,19 +189,19 @@ export default function Contact() {
 
                   {/* Title */}
 
-                  <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500 sm:mt-4 sm:text-[11px]">
+                  <p className="mt-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500 sm:mt-3 sm:text-[11px]">
                     {item.title}
                   </p>
 
                   {/* Value */}
 
-                  <h3 className="mt-1 break-words text-base font-bold leading-6 text-slate-900 sm:mt-2 sm:text-lg sm:leading-7">
+                  <h3 className="mt-1 break-words text-base font-bold leading-6 text-slate-900 sm:mt-1.5 sm:text-lg sm:leading-7">
                     {item.value}
                   </h3>
 
                   {/* Bottom */}
 
-                  <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 sm:mt-5 sm:pt-4">
+                  <div className="mt-3.5 flex items-center justify-between border-t border-slate-100 pt-3 sm:mt-4 sm:pt-3">
                     <div className="flex gap-1.5">
                       <span className="h-2 w-2 rounded-full bg-emerald-400" />
                       <span className="h-2 w-2 rounded-full bg-cyan-400" />
@@ -242,17 +232,17 @@ export default function Contact() {
             transition={{
               delay: 0.4,
             }}
-            className="mt-6 overflow-hidden rounded-[22px] bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-5 sm:mt-8 sm:rounded-[24px] sm:p-6 lg:p-7"
+            className="mt-5 overflow-hidden rounded-[20px] bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-4 sm:mt-6 sm:rounded-[22px] sm:p-5 lg:p-6"
           >
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-5">
               {/* Left */}
 
               <div className="flex-1">
-                <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl lg:text-3xl">
+                <h3 className="text-lg font-bold leading-tight text-white sm:text-xl lg:text-[26px]">
                   Ready to Grow Faster?
                 </h3>
 
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:mt-3 sm:text-[15px] sm:leading-7 lg:text-base lg:leading-7">
+                <p className="mt-2 max-w-2xl text-[14px] leading-6 text-slate-300 lg:text-[15px]">
                   Schedule a free consultation and discover how AdsLyve Media
                   can help your business generate more leads, increase revenue,
                   and build a stronger digital presence.
@@ -263,10 +253,10 @@ export default function Contact() {
 
               <Link
                 href="#"
-                className="group inline-flex h-11 w-full items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500 px-6 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(99,102,241,.30)] transition-all duration-500 hover:-translate-y-1 hover:scale-[1.02] sm:h-12 sm:w-auto sm:px-7 sm:text-[15px] lg:h-13 lg:px-8 lg:text-base"
+                className="group inline-flex h-10 w-full items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500 px-6 text-sm font-semibold text-white shadow-[0_16px_35px_rgba(99,102,241,.30)] transition-all duration-500 hover:-translate-y-1 hover:scale-[1.02] sm:h-11 sm:w-auto sm:px-7"
               >
                 Get In Touch
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2 sm:h-5 sm:w-5" />
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
               </Link>
             </div>
           </motion.div>

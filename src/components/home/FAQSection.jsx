@@ -54,7 +54,7 @@ export default function FAQ() {
   return (
     <section
       id="faq"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-10"
     >
       {/* Background */}
 
@@ -136,44 +136,41 @@ export default function FAQ() {
 
         {/* FAQ */}
 
-        <div className="mt-12  space-y-3 sm:space-y-4">
+        <div className="mt-8 divide-y divide-slate-200">
           {faqs.map((item, index) => {
             const isOpen = active === index;
 
             return (
               <motion.div
                 key={item.question}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{
-                  delay: index * 0.06,
+                  delay: index * 0.05,
                 }}
-                className={`group overflow-hidden rounded-[22px] sm:rounded-[24px] lg:rounded-[28px] border ${item.border} bg-white shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(15,23,42,.08)]`}
+                className="py-1 transition-all duration-300"
               >
                 <button
                   onClick={() => setActive(isOpen ? -1 : index)}
-                  className="flex w-full items-center gap-3 sm:gap-4 p-4 sm:p-5 lg:p-6 text-left"
+                  className="flex w-full items-center gap-3 py-3 text-left"
                 >
                   {/* Icon */}
 
                   <div
-                    className={`flex h-11 w-11 sm:h-12 sm:w-12 lg:h-14 lg:w-14 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-r ${item.color} text-white shadow-lg`}
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r ${item.color} text-white shadow-md`}
                   >
-                    <HelpCircle
-                      size={18}
-                      className="sm:h-5 sm:w-5 lg:h-6 lg:w-6"
-                    />
+                    <HelpCircle size={16} />
                   </div>
 
                   {/* Content */}
 
-                  <div className="flex-1 min-w-0">
-                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] sm:px-3 sm:text-[11px] font-semibold text-slate-600">
+                  <div className="min-w-0 flex-1">
+                    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600">
                       {item.badge}
                     </span>
 
-                    <h3 className="mt-2 sm:mt-3 text-[15px] sm:text-base lg:text-lg font-bold leading-6 lg:leading-7 text-slate-900">
+                    <h3 className="mt-1 text-[15px] font-semibold leading-6 text-slate-900 lg:text-base">
                       {item.question}
                     </h3>
                   </div>
@@ -187,9 +184,9 @@ export default function FAQ() {
                     transition={{
                       duration: 0.3,
                     }}
-                    className={`flex h-9 w-9 sm:h-10 sm:w-10 lg:h-11 lg:w-11 shrink-0 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-r ${item.color} text-white`}
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-r ${item.color} text-white`}
                   >
-                    <ChevronDown size={18} className="sm:h-5 sm:w-5" />
+                    <ChevronDown size={16} />
                   </motion.div>
                 </button>
 
@@ -209,19 +206,14 @@ export default function FAQ() {
                         opacity: 0,
                       }}
                       transition={{
-                        duration: 0.35,
+                        duration: 0.3,
                       }}
+                      className="overflow-hidden"
                     >
-                      <div className="border-t border-slate-100 px-4 sm:px-5 lg:px-6 pb-4 sm:pb-5 lg:pb-6 pt-4 sm:pt-5">
-                        <div className="flex gap-3 sm:gap-4">
-                          <div
-                            className={`mt-1 w-1 rounded-full bg-gradient-to-b ${item.color}`}
-                          />
-
-                          <p className="text-sm sm:text-[15px] lg:text-base leading-7 text-slate-600">
-                            {item.answer}
-                          </p>
-                        </div>
+                      <div className="ml-12 border-l-2 border-slate-200 pl-4 pb-3 pt-1">
+                        <p className="text-sm leading-6 text-slate-600">
+                          {item.answer}
+                        </p>
                       </div>
                     </motion.div>
                   )}
@@ -234,38 +226,41 @@ export default function FAQ() {
         {/* Bottom CTA */}
 
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{
-            delay: 0.3,
-          }}
-          className="relative mt-16 max-sm:mt-10 overflow-hidden rounded-[32px] border border-white/70 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-8 text-center shadow-[0_30px_70px_rgba(15,23,42,.15)]"
+          transition={{ delay: 0.3 }}
+          className="relative mt-10 overflow-hidden rounded-[26px] border border-white/70 bg-white/80 px-5 py-6 shadow-[0_20px_60px_rgba(15,23,42,.08)] backdrop-blur-2xl sm:mt-12 sm:px-8 "
         >
-          <div className="absolute -left-10 top-0 h-40 w-40 rounded-full bg-fuchsia-500/20 blur-3xl" />
+          {/* Background */}
 
-          <div className="absolute -right-10 bottom-0 h-40 w-40 rounded-full bg-cyan-500/20 blur-3xl" />
+          <div className="absolute -left-16 -top-16 h-52 w-52 rounded-full bg-fuchsia-500/15 blur-[90px]" />
 
-          <div className="relative">
-            <h3 className="text-2xl font-bold text-white">
+          <div className="absolute -right-16 -bottom-16 h-52 w-52 rounded-full bg-cyan-500/15 blur-[90px]" />
+
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500" />
+
+          <div className="relative text-center">
+            {/* Heading */}
+            <h3 className="mt-3 text-xl font-bold text-slate-900 sm:text-2xl">
               Still Have Questions?
             </h3>
-
-            <p className="mx-auto mt-4 max-w-2xl leading-8 text-slate-300">
-              Our digital marketing specialists are happy to discuss your
-              business goals and recommend the best growth strategy for your
-              company.
+            {/* Description */}
+            <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-slate-600 sm:text-[15px]">
+              Speak with our digital marketing experts and discover the best
+              strategy to grow your business.
             </p>
-
+            {/* Button */}
             <motion.a
               whileHover={{
-                scale: 1.04,
+                y: -2,
+                scale: 1.02,
               }}
               whileTap={{
                 scale: 0.98,
               }}
               href="#contact"
-              className="mt-8 inline-flex items-center rounded-full bg-gradient-to-r from-fuchsia-600 via-violet-600 to-cyan-500 px-8 py-4 font-semibold text-white shadow-xl transition"
+              className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500 px-6 text-sm font-semibold text-white shadow-[0_15px_35px_rgba(79,70,229,.3)] transition-all duration-300 hover:shadow-[0_20px_40px_rgba(6,182,212,.35)]"
             >
               Talk With Our Experts
             </motion.a>

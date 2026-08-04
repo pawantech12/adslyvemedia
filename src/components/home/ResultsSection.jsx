@@ -83,7 +83,7 @@ export default function Results() {
   return (
     <section
       id="results"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-20 max-sm:py-10"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-10"
     >
       {/* Background */}
 
@@ -165,7 +165,7 @@ export default function Results() {
 
         {/* Cards */}
 
-        <div className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
           {results.map((item, index) => {
             const Icon = item.icon;
 
@@ -180,9 +180,9 @@ export default function Results() {
                   delay: index * 0.08,
                 }}
                 whileHover={{
-                  y: -8,
+                  y: -6,
                 }}
-                className="group relative overflow-hidden rounded-2xl border border-white/70 bg-white/80 p-5 backdrop-blur-xl shadow-[0_12px_35px_rgba(15,23,42,.08)] transition-all duration-500 hover:border-cyan-200 hover:shadow-[0_18px_45px_rgba(6,182,212,.15)]"
+                className="group relative overflow-hidden rounded-2xl border border-white/70 bg-white/80 p-4 backdrop-blur-xl shadow-[0_12px_35px_rgba(15,23,42,.08)] transition-all duration-500 hover:border-cyan-200 hover:shadow-[0_18px_45px_rgba(6,182,212,.15)]"
               >
                 {/* Hover Background */}
 
@@ -213,13 +213,13 @@ export default function Results() {
 
                   {/* Badge */}
 
-                  <span className="mt-4 inline-flex rounded-full bg-slate-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-600">
+                  <span className="mt-3 inline-flex rounded-full bg-slate-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-600">
                     {item.badge}
                   </span>
 
                   {/* Title */}
 
-                  <h3 className="mt-3 text-lg font-bold leading-7 text-slate-900">
+                  <h3 className="mt-2 text-lg font-bold leading-7 text-slate-900">
                     {item.title}
                   </h3>
 
@@ -231,7 +231,7 @@ export default function Results() {
 
                   {/* Bottom */}
 
-                  <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
+                  <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
                     <div className="flex items-center gap-1.5">
                       <span className="h-2 w-2 rounded-full bg-emerald-400" />
                       <span className="h-2 w-2 rounded-full bg-cyan-400" />
@@ -247,182 +247,6 @@ export default function Results() {
             );
           })}
         </div>
-
-        {/* Bottom Highlight */}
-        <motion.div
-          initial={{ opacity: 0, y: 35 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative mt-14 overflow-hidden rounded-[30px] border border-white/70 bg-white/80 p-4 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-2xl sm:mt-16 sm:p-6 lg:mt-20 lg:rounded-[36px] lg:p-8"
-        >
-          {/* Top Gradient */}
-
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500" />
-
-          {/* Background Glow */}
-
-          <div className="absolute -left-24 -top-20 h-60 w-60 rounded-full bg-fuchsia-400/15 blur-[110px]" />
-
-          <div className="absolute -right-20 bottom-0 h-60 w-60 rounded-full bg-cyan-400/15 blur-[110px]" />
-
-          <div className="relative">
-            {/* Header */}
-
-            <div className="flex flex-col items-center text-center">
-              <span className="rounded-full border border-cyan-200 bg-cyan-50 px-3 py-1.5 text-xs font-semibold text-cyan-700 sm:px-4 sm:py-2 sm:text-sm">
-                Proven Performance
-              </span>
-
-              <h3 className="mt-4 text-2xl font-extrabold text-slate-900 sm:text-3xl lg:mt-5 lg:text-4xl">
-                Numbers That{" "}
-                <span className="bg-gradient-to-r from-fuchsia-600 via-violet-600 to-cyan-500 bg-clip-text text-transparent">
-                  Build Trust
-                </span>
-              </h3>
-
-              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
-                We don't chase vanity metrics. Every campaign is optimized
-                around measurable business growth, higher conversions, and
-                long-term ROI.
-              </p>
-            </div>
-
-            {/* Metric Cards */}
-
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:mt-10 lg:gap-5 xl:grid-cols-4">
-              {[
-                {
-                  value: "320%",
-                  label: "Average ROI",
-                  color: "from-fuchsia-500 via-violet-500 to-indigo-600",
-                  progress: "92%",
-                },
-                {
-                  value: "95%",
-                  label: "Client Satisfaction",
-                  color: "from-emerald-500 via-teal-500 to-cyan-500",
-                  progress: "95%",
-                },
-                {
-                  value: "24/7",
-                  label: "Campaign Monitoring",
-                  color: "from-orange-500 via-amber-500 to-yellow-500",
-                  progress: "100%",
-                },
-                {
-                  value: "100%",
-                  label: "Transparent Reporting",
-                  color: "from-cyan-500 via-blue-500 to-indigo-600",
-                  progress: "98%",
-                },
-              ].map((item) => (
-                <motion.div
-                  key={item.label}
-                  whileHover={{
-                    y: -6,
-                    scale: 1.02,
-                  }}
-                  className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-500 hover:shadow-lg"
-                >
-                  <div
-                    className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${item.color}`}
-                  />
-
-                  <div
-                    className={`absolute -right-10 -top-10 h-24 w-24 rounded-full bg-gradient-to-br ${item.color} opacity-10 blur-3xl transition duration-500 group-hover:opacity-20`}
-                  />
-
-                  <div
-                    className={`inline-flex rounded-xl bg-gradient-to-r ${item.color} px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-white shadow-lg`}
-                  >
-                    Performance
-                  </div>
-
-                  <h3
-                    className={`mt-4 bg-gradient-to-r ${item.color} bg-clip-text text-4xl font-extrabold text-transparent lg:text-5xl`}
-                  >
-                    {item.value}
-                  </h3>
-
-                  <p className="mt-1 text-sm font-medium text-slate-600">
-                    {item.label}
-                  </p>
-
-                  <div className="mt-5">
-                    <div className="flex items-center justify-between text-[11px] font-medium text-slate-500">
-                      <span>Growth Score</span>
-
-                      <span>{item.progress}</span>
-                    </div>
-
-                    <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: item.progress }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.6 }}
-                        className={`h-full rounded-full bg-gradient-to-r ${item.color}`}
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Bottom Trust Bar */}
-
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="mt-8 flex flex-col items-start justify-between gap-6 rounded-3xl border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-5 py-5 text-white sm:px-6 sm:py-6 lg:mt-10 lg:flex-row lg:items-center lg:px-8"
-            >
-              {/* Left */}
-
-              <div className="w-full lg:max-w-2xl">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300 sm:text-xs">
-                  Trusted Growth Partner
-                </p>
-
-                <h4 className="mt-2 text-xl font-bold leading-tight sm:text-2xl lg:text-3xl">
-                  Focused on Business Outcomes
-                </h4>
-
-                <p className="mt-2 max-w-xl text-sm leading-7 text-slate-300">
-                  Every marketing decision is backed by strategy, analytics and
-                  continuous optimization to maximize business growth.
-                </p>
-              </div>
-
-              {/* Right */}
-
-              <div className="flex w-full flex-col items-start gap-4 sm:flex-row sm:items-center lg:w-auto">
-                <div className="flex -space-x-2.5">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-900 bg-gradient-to-r from-fuchsia-500 via-violet-500 to-cyan-500 text-sm font-bold text-white shadow-lg"
-                    >
-                      ✓
-                    </div>
-                  ))}
-                </div>
-
-                <div>
-                  <h5 className="text-base font-bold sm:text-lg">
-                    Growth-Driven Strategy
-                  </h5>
-
-                  <p className="mt-1 text-sm text-slate-300">
-                    Performance • Analytics • ROI
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
