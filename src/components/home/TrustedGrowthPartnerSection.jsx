@@ -135,9 +135,9 @@ export default function TrustedGrowthPartner() {
             Trusted Growth Partner
           </motion.span>
 
-          <h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl lg:text-[2.9rem]">
             Your Partner in
-            <span className="block bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+            <span className="mt-1.5 block bg-gradient-to-r from-fuchsia-600 via-violet-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
               Sustainable Business Growth
             </span>
           </h2>

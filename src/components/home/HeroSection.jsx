@@ -156,7 +156,7 @@ export default function Hero() {
           <motion.div
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 5, repeat: Infinity }}
-            className="absolute -left-3 top-8 z-20 hidden xl:block"
+            className="absolute -left-3 -top-4 z-20 hidden xl:block"
           >
             <div className="rounded-xl border border-emerald-100 bg-white/90 px-4 py-3 shadow-lg backdrop-blur-xl">
               <div className="flex items-center gap-3">

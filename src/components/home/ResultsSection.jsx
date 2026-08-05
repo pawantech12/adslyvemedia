@@ -149,9 +149,9 @@ export default function Results() {
             Results That Matter
           </motion.div>
 
-          <h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl lg:text-[2.9rem]">
             We Focus On
-            <span className="block bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 bg-clip-text text-transparent">
+            <span className="mt-1.5 block bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 bg-clip-text text-transparent">
               Business Growth, Not Vanity Metrics
             </span>
           </h2>
