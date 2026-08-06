@@ -1,5 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import "../globals.css";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,14 +11,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function AdminLayout({ children }) {
+export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="min-h-screen bg-slate-50">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
