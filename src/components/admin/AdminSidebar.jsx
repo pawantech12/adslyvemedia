@@ -2,11 +2,34 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 export default function AdminSidebar({ menu, sidebarOpen, setSidebarOpen }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      setLoading(true);
+
+      const response = await axios.post("/api/auth/logout");
+
+      toast.success(response.data.message);
+
+      router.replace("/admin/login");
+      router.refresh();
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to logout.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -51,9 +74,13 @@ export default function AdminSidebar({ menu, sidebarOpen, setSidebarOpen }) {
           </div>
 
           <div className="border-t p-4">
-            <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 py-3 text-red-600 hover:bg-red-50">
+            <button
+              onClick={handleLogout}
+              disabled={loading}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 py-3 text-red-600 hover:bg-red-50"
+            >
               <LogOut size={18} />
-              Logout
+              {loading ? "Logging out..." : "Logout"}
             </button>
           </div>
         </div>
