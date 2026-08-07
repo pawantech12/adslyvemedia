@@ -2,45 +2,269 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Pencil, Trash2, X, BriefcaseBusiness } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  X,
+  BriefcaseBusiness,
+  Search,
+  Code,
+  BarChart3,
+  Megaphone,
+  Globe,
+  Smartphone,
+  Monitor,
+  Palette,
+  Camera,
+  Video,
+  Mail,
+  ShoppingCart,
+  Target,
+  TrendingUp,
+  Users,
+  Settings,
+  Rocket,
+  Lightbulb,
+  Star,
+  CheckCircle,
+  Database,
+  ShieldCheck,
+  FileText,
+  PenTool,
+  Layout,
+  MessageSquare,
+  LucideIcon,
+} from "lucide-react";
+import axios from "axios";
+import { toast } from "sonner";
+
+/* =========================
+   ICON MAP
+========================= */
+
+const iconMap = {
+  BriefcaseBusiness,
+  Search,
+  Code,
+  BarChart3,
+  Megaphone,
+  Globe,
+  Smartphone,
+  Monitor,
+  Palette,
+  Camera,
+  Video,
+  Mail,
+  ShoppingCart,
+  Target,
+  TrendingUp,
+  Users,
+  Settings,
+  Rocket,
+  Lightbulb,
+  Star,
+  CheckCircle,
+  Database,
+  ShieldCheck,
+  FileText,
+  PenTool,
+  Layout,
+  MessageSquare,
+};
+
+/* =========================
+   ICON OPTIONS
+========================= */
+
+const iconOptions = [
+  {
+    name: "BriefcaseBusiness",
+    label: "Business",
+  },
+  {
+    name: "Search",
+    label: "Search / SEO",
+  },
+  {
+    name: "Code",
+    label: "Development",
+  },
+  {
+    name: "BarChart3",
+    label: "Analytics",
+  },
+  {
+    name: "Megaphone",
+    label: "Marketing",
+  },
+  {
+    name: "Globe",
+    label: "Website",
+  },
+  {
+    name: "Smartphone",
+    label: "Mobile",
+  },
+  {
+    name: "Monitor",
+    label: "Desktop",
+  },
+  {
+    name: "Palette",
+    label: "Design",
+  },
+  {
+    name: "Camera",
+    label: "Photography",
+  },
+  {
+    name: "Video",
+    label: "Video",
+  },
+  {
+    name: "Mail",
+    label: "Email",
+  },
+  {
+    name: "ShoppingCart",
+    label: "E-commerce",
+  },
+  {
+    name: "Target",
+    label: "Target",
+  },
+  {
+    name: "TrendingUp",
+    label: "Growth",
+  },
+  {
+    name: "Users",
+    label: "Users",
+  },
+  {
+    name: "Settings",
+    label: "Settings",
+  },
+  {
+    name: "Rocket",
+    label: "Launch",
+  },
+  {
+    name: "Lightbulb",
+    label: "Ideas",
+  },
+  {
+    name: "Star",
+    label: "Star",
+  },
+  {
+    name: "CheckCircle",
+    label: "Success",
+  },
+  {
+    name: "Database",
+    label: "Database",
+  },
+  {
+    name: "ShieldCheck",
+    label: "Security",
+  },
+  {
+    name: "FileText",
+    label: "Content",
+  },
+  {
+    name: "PenTool",
+    label: "Creative",
+  },
+  {
+    name: "Layout",
+    label: "Layout",
+  },
+  {
+    name: "MessageSquare",
+    label: "Communication",
+  },
+];
+
+/* =========================
+   DEFAULT FORM
+========================= */
+
+const defaultForm = {
+  title: "",
+  subtitle: "",
+  description: "",
+  icon: "BriefcaseBusiness",
+  features: [""],
+};
 
 export default function ServicesManagement() {
+  const [services, setServices] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  const [saving, setSaving] = useState(false);
+
+  const [deleting, setDeleting] = useState(false);
+
   const [openModal, setOpenModal] = useState(false);
+
   const [editingService, setEditingService] = useState(null);
+
   const [deleteModal, setDeleteModal] = useState(false);
+
   const [serviceToDelete, setServiceToDelete] = useState(null);
 
-  const [services, setServices] = useState([
-    {
-      id: 1,
-      title: "Search Engine Optimization (SEO)",
-      subtitle: "Rank Higher. Get Found. Grow Organically.",
-      description: "SEO Description",
-      features: ["Website SEO Audit", "Keyword Research", "On-Page SEO"],
-    },
-    {
-      id: 2,
-      title: "Digital Marketing",
-      subtitle: "End-to-End Digital Marketing Solutions",
-      description: "Digital Marketing Description",
-      features: ["Brand Strategy", "Lead Generation"],
-    },
-  ]);
+  const [formData, setFormData] = useState(defaultForm);
 
-  const [formData, setFormData] = useState({
-    title: "",
-    subtitle: "",
-    description: "",
-    features: [""],
-  });
+  /* =========================
+     FETCH SERVICES
+  ========================= */
+
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+
+      const response = await axios.get("/api/admin/services");
+
+      if (response.data.success) {
+        setServices(response.data.services || []);
+      }
+    } catch (error) {
+      console.error(error);
+
+      if (error.response?.status === 401) {
+        toast.error("Session expired. Please login again.");
+        return;
+      }
+
+      toast.error(error.response?.data?.message || "Failed to load services.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    document.body.style.overflow = openModal ? "hidden" : "auto";
+    fetchServices();
+  }, []);
+
+  /* =========================
+     BODY SCROLL
+  ========================= */
+
+  useEffect(() => {
+    document.body.style.overflow = openModal || deleteModal ? "hidden" : "auto";
 
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [openModal]);
+  }, [openModal, deleteModal]);
+
+  /* =========================
+     RESET FORM
+  ========================= */
 
   const resetForm = () => {
     setEditingService(null);
@@ -49,43 +273,66 @@ export default function ServicesManagement() {
       title: "",
       subtitle: "",
       description: "",
+      icon: "BriefcaseBusiness",
       features: [""],
     });
   };
+
+  /* =========================
+     OPEN ADD MODAL
+  ========================= */
+
+  const openAddModal = () => {
+    resetForm();
+    setOpenModal(true);
+  };
+
+  /* =========================
+     EDIT SERVICE
+  ========================= */
 
   const handleEdit = (service) => {
     setEditingService(service);
 
     setFormData({
-      title: service.title,
-      subtitle: service.subtitle,
-      description: service.description,
-      features: [...service.features],
+      title: service.title || "",
+      subtitle: service.subtitle || "",
+      description: service.description || "",
+      icon: service.icon || "BriefcaseBusiness",
+      features: service.features?.length > 0 ? [...service.features] : [""],
     });
 
     setOpenModal(true);
   };
 
-  const handleDelete = (service) => {
-    setServiceToDelete(service);
-    setDeleteModal(true);
+  /* =========================
+     CLOSE MODAL
+  ========================= */
+
+  const closeFormModal = () => {
+    if (saving) return;
+
+    setOpenModal(false);
+
+    resetForm();
   };
 
-  const confirmDelete = () => {
-    if (!serviceToDelete) return;
+  /* =========================
+     FORM CHANGE
+  ========================= */
 
-    setServices((prev) =>
-      prev.filter((item) => item.id !== serviceToDelete.id),
-    );
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-    setDeleteModal(false);
-    setServiceToDelete(null);
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const cancelDelete = () => {
-    setDeleteModal(false);
-    setServiceToDelete(null);
-  };
+  /* =========================
+     FEATURES
+  ========================= */
 
   const addFeature = () => {
     setFormData((prev) => ({
@@ -95,31 +342,262 @@ export default function ServicesManagement() {
   };
 
   const updateFeature = (index, value) => {
-    const features = [...formData.features];
-    features[index] = value;
+    setFormData((prev) => {
+      const features = [...prev.features];
 
-    setFormData({
-      ...formData,
-      features,
+      features[index] = value;
+
+      return {
+        ...prev,
+        features,
+      };
     });
   };
 
   const removeFeature = (index) => {
-    if (formData.features.length === 1) return;
+    setFormData((prev) => {
+      if (prev.features.length === 1) {
+        return prev;
+      }
 
-    setFormData({
-      ...formData,
-      features: formData.features.filter((_, i) => i !== index),
+      return {
+        ...prev,
+        features: prev.features.filter((_, i) => i !== index),
+      };
     });
   };
 
-  const handleAddService = () => {};
+  /* =========================
+     VALIDATE
+  ========================= */
 
-  const handleUpdateService = () => {};
+  const validateForm = () => {
+    if (!formData.title.trim()) {
+      toast.error("Service title is required.");
+      return false;
+    }
+
+    if (!formData.subtitle.trim()) {
+      toast.error("Service subtitle is required.");
+      return false;
+    }
+
+    if (!formData.description.trim()) {
+      toast.error("Service description is required.");
+      return false;
+    }
+
+    if (!formData.icon) {
+      toast.error("Please select a service icon.");
+      return false;
+    }
+
+    const validFeatures = formData.features
+      .map((feature) => feature.trim())
+      .filter(Boolean);
+
+    if (validFeatures.length === 0) {
+      toast.error("Add at least one service feature.");
+      return false;
+    }
+
+    return true;
+  };
+
+  /* =========================
+     ADD SERVICE
+  ========================= */
+
+  const handleAddService = async () => {
+    if (!validateForm()) return;
+
+    try {
+      setSaving(true);
+
+      const payload = {
+        title: formData.title.trim(),
+        subtitle: formData.subtitle.trim(),
+        description: formData.description.trim(),
+        icon: formData.icon,
+        features: formData.features
+          .map((feature) => feature.trim())
+          .filter(Boolean),
+      };
+
+      const response = await axios.post("/api/admin/services", payload);
+
+      if (response.data.success) {
+        setServices((prev) => [response.data.service, ...prev]);
+
+        toast.success(response.data.message || "Service created successfully.");
+
+        setOpenModal(false);
+
+        resetForm();
+      }
+    } catch (error) {
+      console.error(error);
+
+      if (error.response?.status === 401) {
+        toast.error("Session expired. Please login again.");
+        return;
+      }
+
+      toast.error(error.response?.data?.message || "Failed to create service.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  /* =========================
+     UPDATE SERVICE
+  ========================= */
+
+  const handleUpdateService = async () => {
+    if (!editingService) return;
+
+    if (!validateForm()) return;
+
+    try {
+      setSaving(true);
+
+      const payload = {
+        id: editingService._id,
+        title: formData.title.trim(),
+        subtitle: formData.subtitle.trim(),
+        description: formData.description.trim(),
+        icon: formData.icon,
+        features: formData.features
+          .map((feature) => feature.trim())
+          .filter(Boolean),
+      };
+
+      const response = await axios.put("/api/admin/services", payload);
+
+      if (response.data.success) {
+        setServices((prev) =>
+          prev.map((service) =>
+            service._id === editingService._id
+              ? response.data.service
+              : service,
+          ),
+        );
+
+        toast.success(response.data.message || "Service updated successfully.");
+
+        setOpenModal(false);
+
+        resetForm();
+      }
+    } catch (error) {
+      console.error(error);
+
+      if (error.response?.status === 401) {
+        toast.error("Session expired. Please login again.");
+        return;
+      }
+
+      toast.error(error.response?.data?.message || "Failed to update service.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  /* =========================
+     DELETE
+  ========================= */
+
+  const handleDelete = (service) => {
+    setServiceToDelete(service);
+
+    setDeleteModal(true);
+  };
+
+  const cancelDelete = () => {
+    if (deleting) return;
+
+    setDeleteModal(false);
+
+    setServiceToDelete(null);
+  };
+
+  const confirmDelete = async () => {
+    if (!serviceToDelete) return;
+
+    try {
+      setDeleting(true);
+
+      const response = await axios.delete(
+        `/api/admin/services?id=${serviceToDelete._id}`,
+      );
+
+      if (response.data.success) {
+        setServices((prev) =>
+          prev.filter((service) => service._id !== serviceToDelete._id),
+        );
+
+        toast.success(response.data.message || "Service deleted successfully.");
+
+        setDeleteModal(false);
+
+        setServiceToDelete(null);
+      }
+    } catch (error) {
+      console.error(error);
+
+      if (error.response?.status === 401) {
+        toast.error("Session expired. Please login again.");
+        return;
+      }
+
+      toast.error(error.response?.data?.message || "Failed to delete service.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  /* =========================
+     ICON COMPONENT
+  ========================= */
+
+  const getIcon = (iconName) => {
+    return iconMap[iconName] || BriefcaseBusiness;
+  };
+
+  /* =========================
+     LOADING
+  ========================= */
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="h-8 w-56 animate-pulse rounded-lg bg-slate-200" />
+
+            <div className="mt-2 h-5 w-72 animate-pulse rounded bg-slate-100" />
+          </div>
+
+          <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 sm:w-44" />
+        </div>
+
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+          <div className="space-y-4 p-6">
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="h-16 animate-pulse rounded-xl bg-slate-100"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 lg:space-y-8">
-      {/* ================= Header ================= */}
+      {/* ================= HEADER ================= */}
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
@@ -133,10 +611,7 @@ export default function ServicesManagement() {
         </div>
 
         <button
-          onClick={() => {
-            resetForm();
-            setOpenModal(true);
-          }}
+          onClick={openAddModal}
           className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] sm:w-auto"
         >
           <Plus size={18} />
@@ -144,96 +619,98 @@ export default function ServicesManagement() {
         </button>
       </div>
 
-      {/* ================= Responsive Table ================= */}
+      {/* ================= TABLE ================= */}
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="min-w-[850px] w-full">
-            <thead className="bg-slate-50">
-              <tr className="border-b border-slate-200">
-                <th className="px-4 py-4 text-left text-sm font-semibold text-slate-500 sm:px-6">
-                  Service
-                </th>
+      {services.length > 0 && (
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="min-w-[950px] w-full">
+              <thead className="bg-slate-50">
+                <tr className="border-b border-slate-200">
+                  <th className="px-4 py-4 text-left text-sm font-semibold text-slate-500 sm:px-6">
+                    Service
+                  </th>
 
-                <th className="px-4 py-4 text-left text-sm font-semibold text-slate-500 sm:px-6">
-                  Subtitle
-                </th>
+                  <th className="px-4 py-4 text-left text-sm font-semibold text-slate-500 sm:px-6">
+                    Subtitle
+                  </th>
 
-                <th className="px-4 py-4 text-center text-sm font-semibold text-slate-500 sm:px-6">
-                  Features
-                </th>
+                  <th className="px-4 py-4 text-center text-sm font-semibold text-slate-500 sm:px-6">
+                    Features
+                  </th>
 
-                <th className="px-4 py-4 text-right text-sm font-semibold text-slate-500 sm:px-6">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-
-            <tbody className="divide-y divide-slate-100">
-              {services.map((service) => (
-                <tr
-                  key={service.id}
-                  className="transition-colors duration-200 hover:bg-slate-50"
-                >
-                  {/* Service */}
-
-                  <td className="px-4 py-5 sm:px-6">
-                    <div className="max-w-[220px]">
-                      <h3 className="font-semibold leading-6 text-slate-900">
-                        {service.title}
-                      </h3>
-                    </div>
-                  </td>
-
-                  {/* Subtitle */}
-
-                  <td className="px-4 py-5 sm:px-6">
-                    <p className="max-w-[320px] text-sm leading-6 text-slate-600">
-                      {service.subtitle}
-                    </p>
-                  </td>
-
-                  {/* Features */}
-
-                  <td className="px-4 py-5 text-center sm:px-6">
-                    <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                      {service.features.length} Features
-                    </span>
-                  </td>
-
-                  {/* Actions */}
-
-                  <td className="px-4 py-5 sm:px-6">
-                    <div className="flex justify-end gap-2">
-                      <button
-                        onClick={() => handleEdit(service)}
-                        className="flex h-10 w-10 items-center justify-center rounded-lg border border-cyan-200 bg-cyan-50 text-cyan-700 transition-all duration-200 hover:bg-cyan-100 hover:scale-105"
-                      >
-                        <Pencil size={16} />
-                      </button>
-
-                      <button
-                        onClick={() => handleDelete(service)}
-                        className="flex h-10 w-10 items-center justify-center rounded-lg border border-red-200 bg-red-50 text-red-600 transition-all duration-200 hover:bg-red-100 hover:scale-105"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </td>
+                  <th className="px-4 py-4 text-right text-sm font-semibold text-slate-500 sm:px-6">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody className="divide-y divide-slate-100">
+                {services.map((service) => {
+                  const Icon = getIcon(service.icon);
+
+                  return (
+                    <tr
+                      key={service._id}
+                      className="transition-colors duration-200 hover:bg-slate-50"
+                    >
+                      <td className="px-4 py-5 sm:px-6">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 text-white">
+                            <Icon size={18} />
+                          </div>
+
+                          <div className="max-w-[260px]">
+                            <h3 className="font-semibold leading-6 text-slate-900">
+                              {service.title}
+                            </h3>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className="px-4 py-5 sm:px-6">
+                        <p className="max-w-[320px] text-sm leading-6 text-slate-600">
+                          {service.subtitle}
+                        </p>
+                      </td>
+
+                      <td className="px-4 py-5 text-center sm:px-6">
+                        <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                          {service.features?.length || 0} Features
+                        </span>
+                      </td>
+
+                      <td className="px-4 py-5 sm:px-6">
+                        <div className="flex justify-end gap-2">
+                          <button
+                            onClick={() => handleEdit(service)}
+                            className="flex h-10 w-10 items-center justify-center rounded-lg border border-cyan-200 bg-cyan-50 text-cyan-700 transition-all duration-200 hover:scale-105 hover:bg-cyan-100"
+                          >
+                            <Pencil size={16} />
+                          </button>
+
+                          <button
+                            onClick={() => handleDelete(service)}
+                            className="flex h-10 w-10 items-center justify-center rounded-lg border border-red-200 bg-red-50 text-red-600 transition-all duration-200 hover:scale-105 hover:bg-red-100"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="border-t border-slate-200 bg-slate-50 px-4 py-3 text-center text-xs text-slate-500 lg:hidden">
+            ← Swipe horizontally to view all columns →
+          </div>
         </div>
+      )}
 
-        {/* Scroll Hint (Only Mobile) */}
-
-        <div className="border-t border-slate-200 bg-slate-50 px-4 py-3 text-center text-xs text-slate-500 lg:hidden">
-          ← Swipe horizontally to view all columns →
-        </div>
-      </div>
-
-      {/* ================= Modal ================= */}
+      {/* ================= ADD / EDIT MODAL ================= */}
 
       <AnimatePresence>
         {openModal && (
@@ -241,8 +718,7 @@ export default function ServicesManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-2 sm:p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-2 backdrop-blur-sm sm:p-4"
           >
             <motion.div
               initial={{
@@ -264,31 +740,35 @@ export default function ServicesManagement() {
                 duration: 0.25,
                 ease: "easeOut",
               }}
-              className="flex h-auto max-h-[96vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+              className="flex max-h-[96vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
             >
-              {/* Header */}
+              {/* HEADER */}
 
               <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 sm:px-5">
-                <h3 className="text-lg font-bold text-slate-900">
-                  {editingService ? "Edit Service" : "Add New Service"}
-                </h3>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900">
+                    {editingService ? "Edit Service" : "Add New Service"}
+                  </h3>
+
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    Configure your website service.
+                  </p>
+                </div>
 
                 <button
-                  onClick={() => {
-                    setOpenModal(false);
-                    resetForm();
-                  }}
-                  className="rounded-lg p-2 transition hover:bg-slate-100"
+                  disabled={saving}
+                  onClick={closeFormModal}
+                  className="rounded-lg p-2 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <X size={20} />
                 </button>
               </div>
 
-              {/* Body */}
+              {/* BODY */}
 
               <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-5">
                 <div className="space-y-4">
-                  {/* Service Title */}
+                  {/* TITLE */}
 
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-slate-700">
@@ -296,18 +776,15 @@ export default function ServicesManagement() {
                     </label>
 
                     <input
+                      name="title"
                       value={formData.title}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          title: e.target.value,
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500"
+                      onChange={handleChange}
+                      placeholder="Search Engine Optimization (SEO)"
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/10"
                     />
                   </div>
 
-                  {/* Subtitle */}
+                  {/* SUBTITLE */}
 
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-slate-700">
@@ -315,18 +792,70 @@ export default function ServicesManagement() {
                     </label>
 
                     <input
+                      name="subtitle"
                       value={formData.subtitle}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          subtitle: e.target.value,
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500"
+                      onChange={handleChange}
+                      placeholder="Rank Higher. Get Found. Grow Organically."
+                      className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/10"
                     />
                   </div>
 
-                  {/* Description */}
+                  {/* ICON */}
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-700">
+                      Service Icon
+                    </label>
+
+                    <div className="relative">
+                      <select
+                        value={formData.icon}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            icon: e.target.value,
+                          }))
+                        }
+                        className="h-12 w-full appearance-none rounded-xl border border-slate-300 bg-white px-4 pr-10 text-sm outline-none transition focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/10"
+                      >
+                        {iconOptions.map((option) => (
+                          <option key={option.name} value={option.name}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="mt-3 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                      {(() => {
+                        const SelectedIcon = getIcon(formData.icon);
+
+                        return (
+                          <>
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 text-white">
+                              <SelectedIcon size={18} />
+                            </div>
+
+                            <div>
+                              <p className="text-xs text-slate-500">
+                                Selected Icon
+                              </p>
+
+                              <p className="text-sm font-semibold text-slate-900">
+                                {
+                                  iconOptions.find(
+                                    (item) => item.name === formData.icon,
+                                  )?.label
+                                }
+                              </p>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </div>
+
+                  {/* DESCRIPTION */}
 
                   <div>
                     <label className="mb-1.5 block text-sm font-medium text-slate-700">
@@ -334,19 +863,16 @@ export default function ServicesManagement() {
                     </label>
 
                     <textarea
+                      name="description"
                       rows={4}
                       value={formData.description}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          description: e.target.value,
-                        })
-                      }
-                      className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500"
+                      onChange={handleChange}
+                      placeholder="Describe this service..."
+                      className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/10"
                     />
                   </div>
 
-                  {/* Features */}
+                  {/* FEATURES */}
 
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">
@@ -365,13 +891,14 @@ export default function ServicesManagement() {
                               updateFeature(index, e.target.value)
                             }
                             placeholder={`Feature ${index + 1}`}
-                            className="flex-1 rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500"
+                            className="min-w-0 flex-1 rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/10"
                           />
 
                           <button
                             type="button"
                             onClick={() => removeFeature(index)}
-                            className="flex h-11 items-center justify-center rounded-xl border border-red-200 bg-red-50 px-4 text-red-600 transition hover:bg-red-100 sm:h-auto sm:w-11 sm:px-0"
+                            disabled={formData.features.length === 1 || saving}
+                            className="flex h-11 items-center justify-center rounded-xl border border-red-200 bg-red-50 px-4 text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-40 sm:w-11 sm:px-0"
                           >
                             <Trash2 size={18} />
                           </button>
@@ -382,7 +909,8 @@ export default function ServicesManagement() {
                     <button
                       type="button"
                       onClick={addFeature}
-                      className="mt-3 rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:bg-slate-100"
+                      disabled={saving}
+                      className="mt-3 rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:bg-slate-100 disabled:opacity-50"
                     >
                       + Add Feature
                     </button>
@@ -390,27 +918,36 @@ export default function ServicesManagement() {
                 </div>
               </div>
 
-              {/* Footer */}
+              {/* FOOTER */}
 
-              <div className="sticky bottom-0 border-t border-slate-200 bg-white px-4 py-3 sm:px-5">
+              <div className="border-t border-slate-200 bg-white px-4 py-3 sm:px-5">
                 <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
                   <button
-                    onClick={() => {
-                      setOpenModal(false);
-                      resetForm();
-                    }}
-                    className="rounded-xl border border-slate-300 px-5 py-2.5 font-medium transition hover:bg-slate-100"
+                    disabled={saving}
+                    onClick={closeFormModal}
+                    className="rounded-xl border border-slate-300 px-5 py-2.5 font-medium transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     Cancel
                   </button>
 
                   <button
+                    disabled={saving}
                     onClick={
                       editingService ? handleUpdateService : handleAddService
                     }
-                    className="rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-5 py-2.5 font-semibold text-white shadow-lg transition hover:scale-[1.02]"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-5 py-2.5 font-semibold text-white shadow-lg transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {editingService ? "Save Changes" : "Save Service"}
+                    {saving ? (
+                      <>
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+
+                        {editingService ? "Saving..." : "Creating..."}
+                      </>
+                    ) : editingService ? (
+                      "Save Changes"
+                    ) : (
+                      "Save Service"
+                    )}
                   </button>
                 </div>
               </div>
@@ -419,13 +956,15 @@ export default function ServicesManagement() {
         )}
       </AnimatePresence>
 
+      {/* ================= DELETE MODAL ================= */}
+
       <AnimatePresence>
         {deleteModal && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4"
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
           >
             <motion.div
               initial={{
@@ -443,18 +982,16 @@ export default function ServicesManagement() {
                 opacity: 0,
                 y: 20,
               }}
-              transition={{ duration: 0.2 }}
-              className="w-full max-w-md rounded-2xl bg-white shadow-2xl"
+              transition={{
+                duration: 0.2,
+              }}
+              className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl"
             >
-              {/* Header */}
-
               <div className="border-b border-slate-200 px-6 py-4">
                 <h3 className="text-lg font-bold text-slate-900">
                   Delete Service
                 </h3>
               </div>
-
-              {/* Body */}
 
               <div className="px-6 py-6">
                 <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
@@ -478,21 +1015,28 @@ export default function ServicesManagement() {
                 </p>
               </div>
 
-              {/* Footer */}
-
               <div className="flex flex-col-reverse gap-3 border-t border-slate-200 p-5 sm:flex-row sm:justify-end">
                 <button
+                  disabled={deleting}
                   onClick={cancelDelete}
-                  className="rounded-xl border border-slate-300 px-5 py-2.5 font-medium transition hover:bg-slate-100"
+                  className="rounded-xl border border-slate-300 px-5 py-2.5 font-medium transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Cancel
                 </button>
 
                 <button
+                  disabled={deleting}
                   onClick={confirmDelete}
-                  className="rounded-xl bg-red-600 px-5 py-2.5 font-semibold text-white transition hover:bg-red-700"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-2.5 font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Delete Service
+                  {deleting ? (
+                    <>
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                      Deleting...
+                    </>
+                  ) : (
+                    "Delete Service"
+                  )}
                 </button>
               </div>
             </motion.div>
@@ -500,13 +1044,19 @@ export default function ServicesManagement() {
         )}
       </AnimatePresence>
 
-      {/* ================= Empty State ================= */}
+      {/* ================= EMPTY STATE ================= */}
 
       {services.length === 0 && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center"
+          initial={{
+            opacity: 0,
+            y: 10,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center shadow-sm"
         >
           <BriefcaseBusiness className="mx-auto mb-4 h-12 w-12 text-slate-400" />
 
@@ -514,15 +1064,13 @@ export default function ServicesManagement() {
             No Services Found
           </h3>
 
-          <p className="mt-2 text-sm text-slate-500">
-            Click <strong>Add New Service</strong> to create your first service.
+          <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">
+            Click <strong>Add New Service</strong> to create your first website
+            service.
           </p>
 
           <button
-            onClick={() => {
-              resetForm();
-              setOpenModal(true);
-            }}
+            onClick={openAddModal}
             className="mt-6 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.02]"
           >
             <Plus size={18} />

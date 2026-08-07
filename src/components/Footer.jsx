@@ -1,21 +1,29 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  ArrowUpRight,
-  Facebook,
-  Instagram,
-  Linkedin,
-  Sparkles,
-} from "lucide-react";
+import { ArrowUpRight, Facebook, Instagram, Linkedin } from "lucide-react";
 import Image from "next/image";
 
 const quickLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About Us", href: "#about" },
-  { name: "Services", href: "#services" },
-  { name: "Contact", href: "#contact" },
+  {
+    name: "Home",
+    href: "#home",
+  },
+  {
+    name: "About Us",
+    href: "#about",
+  },
+  {
+    name: "Services",
+    href: "#services",
+  },
+  {
+    name: "Contact",
+    href: "#contact",
+  },
 ];
 
 const services = [
@@ -27,24 +35,24 @@ const services = [
   "Web & App Development",
 ];
 
-const socialLinks = [
+const socialStyles = [
   {
     name: "LinkedIn",
-    href: "#",
+    key: "linkedin",
     icon: Linkedin,
     color:
       "hover:bg-gradient-to-r hover:from-blue-600 hover:to-cyan-500 hover:text-white",
   },
   {
     name: "Instagram",
-    href: "#",
+    key: "instagram",
     icon: Instagram,
     color:
       "hover:bg-gradient-to-r hover:from-pink-500 hover:via-fuchsia-500 hover:to-orange-400 hover:text-white",
   },
   {
     name: "Facebook",
-    href: "#",
+    key: "facebook",
     icon: Facebook,
     color:
       "hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white",
@@ -52,17 +60,62 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const [contact, setContact] = useState(null);
+
+  useEffect(() => {
+    const fetchContact = async () => {
+      try {
+        const response = await axios.get("/api/admin/contact");
+
+        if (response.data.success) {
+          setContact(response.data.contact);
+        }
+      } catch (error) {
+        console.error("FETCH FOOTER CONTACT ERROR:", error);
+      }
+    };
+
+    fetchContact();
+  }, []);
+
+  const socialLinks = socialStyles
+    .map((social) => ({
+      ...social,
+      href: contact?.[social.key] || "#",
+    }))
+    .filter((social) => social.href && social.href !== "#");
+
   return (
-    <footer className="relative overflow-hidden bg-slate-950 text-white">
-      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-6 md:py-12 lg:px-8">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+    <footer className="relative overflow-hidden bg-slate-950">
+      {/* Background */}
+
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute -left-40 top-0 h-96 w-96 rounded-full bg-fuchsia-600/10 blur-[120px]" />
+
+        <div className="absolute right-0 top-20 h-96 w-96 rounded-full bg-blue-600/10 blur-[140px]" />
+
+        <div className="absolute bottom-0 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[120px]" />
+      </div>
+
+      <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
 
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            initial={{
+              opacity: 0,
+              y: 25,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.6,
+            }}
           >
             <Link
               href="/"
@@ -90,10 +143,20 @@ export default function Footer() {
           {/* Quick Links */}
 
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+            initial={{
+              opacity: 0,
+              y: 25,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              delay: 0.1,
+            }}
           >
             <h3 className="mb-4 text-lg font-bold text-white">Quick Links</h3>
 
@@ -118,10 +181,20 @@ export default function Footer() {
           {/* Services */}
 
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            initial={{
+              opacity: 0,
+              y: 25,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              delay: 0.2,
+            }}
           >
             <h3 className="mb-4 text-lg font-bold text-white">Services</h3>
 
@@ -142,32 +215,50 @@ export default function Footer() {
           {/* Social */}
 
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+            initial={{
+              opacity: 0,
+              y: 25,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              delay: 0.3,
+            }}
           >
             <h3 className="mb-4 text-lg font-bold text-white">Follow Us</h3>
 
-            <div className="flex items-center gap-2.5">
-              {socialLinks.map((item) => {
-                const Icon = item.icon;
+            {socialLinks.length > 0 ? (
+              <div className="flex items-center gap-2.5">
+                {socialLinks.map((item) => {
+                  const Icon = item.icon;
 
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    aria-label={item.name}
-                    className={`group flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 ${item.color}`}
-                  >
-                    <Icon
-                      size={18}
-                      className="transition-transform duration-300 group-hover:scale-110"
-                    />
-                  </Link>
-                );
-              })}
-            </div>
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={item.name}
+                      className={`group flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 ${item.color}`}
+                    >
+                      <Icon
+                        size={18}
+                        className="transition-transform duration-300 group-hover:scale-110"
+                      />
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-sm text-slate-500">
+                Social links unavailable.
+              </p>
+            )}
           </motion.div>
         </div>
 

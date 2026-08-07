@@ -9,9 +9,10 @@ import Results from "@/components/home/ResultsSection";
 import Services from "@/components/home/ServicesSection";
 import TrustedGrowthPartner from "@/components/home/TrustedGrowthPartnerSection";
 import WhyChooseUs from "@/components/home/WhyChooseUsSection";
+import axios from "axios";
 import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
       <Hero />

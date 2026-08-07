@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { AnimatePresence, motion } from "framer-motion";
+
 import {
   Eye,
   Trash2,
@@ -12,52 +14,115 @@ import {
   Calendar,
   X,
   Users,
+  RefreshCw,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 
-const initialLeads = [
-  {
-    id: 1,
-    name: "Rahul Sharma",
-    email: "rahul@gmail.com",
-    phone: "+91 9876543210",
-    message:
-      "I need SEO services for my e-commerce business. Please contact me.",
-    status: "New",
-    date: "05 Aug 2026",
-  },
-  {
-    id: 2,
-    name: "Amit Patel",
-    email: "amit@gmail.com",
-    phone: "+91 9876543211",
-    message: "Looking for Google Ads campaign management for my business.",
-    status: "Contacted",
-    date: "04 Aug 2026",
-  },
-  {
-    id: 3,
-    name: "Priya Verma",
-    email: "priya@gmail.com",
-    phone: "+91 9876543212",
-    message: "Need a complete digital marketing strategy for our startup.",
-    status: "Closed",
-    date: "03 Aug 2026",
-  },
-];
+/* =========================
+   STATUS STYLE
+========================= */
+
+const getStatusStyle = (status) => {
+  switch (status) {
+    case "New":
+      return "bg-emerald-100 text-emerald-700";
+
+    case "Contacted":
+      return "bg-blue-100 text-blue-700";
+
+    case "Closed":
+      return "bg-slate-200 text-slate-700";
+
+    default:
+      return "bg-slate-100 text-slate-600";
+  }
+};
+
+/* =========================
+   DATE FORMATTER
+========================= */
+
+const formatDate = (date) => {
+  if (!date) return "—";
+
+  return new Date(date).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
 
 export default function LeadManagementPage() {
-  const [leads, setLeads] = useState(initialLeads);
+  const [leads, setLeads] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState("");
 
   const [selectedLead, setSelectedLead] = useState(null);
 
   const [viewModal, setViewModal] = useState(false);
+
   const [deleteModal, setDeleteModal] = useState(false);
+
   const [leadToDelete, setLeadToDelete] = useState(null);
+
+  const [updatingStatus, setUpdatingStatus] = useState(false);
+
+  const [deleting, setDeleting] = useState(false);
+
+  /* =========================
+     FETCH LEADS
+  ========================= */
+
+  const fetchLeads = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await fetch("/api/admin/leads", {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch leads.");
+      }
+
+      setLeads(data.leads || []);
+    } catch (error) {
+      console.error("FETCH LEADS ERROR:", error);
+
+      setError(error.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* =========================
+     INITIAL FETCH
+  ========================= */
+
+  useEffect(() => {
+    fetchLeads();
+  }, []);
+
+  /* =========================
+     VIEW
+  ========================= */
 
   const handleView = (lead) => {
     setSelectedLead(lead);
     setViewModal(true);
   };
+
+  /* =========================
+     CLOSE VIEW
+  ========================= */
 
   const closeModal = () => {
     setViewModal(false);
@@ -67,48 +132,119 @@ export default function LeadManagementPage() {
     }, 250);
   };
 
+  /* =========================
+     DELETE MODAL
+  ========================= */
+
   const handleDelete = (lead) => {
     setLeadToDelete(lead);
     setDeleteModal(true);
   };
 
-  const confirmDelete = () => {
+  const cancelDelete = () => {
+    if (deleting) return;
+
+    setDeleteModal(false);
+    setLeadToDelete(null);
+  };
+
+  /* =========================
+     DELETE LEAD
+  ========================= */
+
+  const confirmDelete = async () => {
     if (!leadToDelete) return;
 
-    setLeads((prev) => prev.filter((lead) => lead.id !== leadToDelete.id));
+    try {
+      setDeleting(true);
 
-    setDeleteModal(false);
-    setLeadToDelete(null);
-  };
-
-  const cancelDelete = () => {
-    setDeleteModal(false);
-    setLeadToDelete(null);
-  };
-
-  const updateStatus = (id, status) => {
-    setLeads((prev) =>
-      prev.map((lead) =>
-        lead.id === id
-          ? {
-              ...lead,
-              status,
-            }
-          : lead,
-      ),
-    );
-
-    if (selectedLead?.id === id) {
-      setSelectedLead({
-        ...selectedLead,
-        status,
+      const response = await fetch(`/api/admin/leads?id=${leadToDelete._id}`, {
+        method: "DELETE",
+        credentials: "include",
       });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to delete lead.");
+      }
+
+      setLeads((prev) => prev.filter((lead) => lead._id !== leadToDelete._id));
+
+      if (selectedLead?._id === leadToDelete._id) {
+        closeModal();
+      }
+
+      setDeleteModal(false);
+      setLeadToDelete(null);
+    } catch (error) {
+      console.error("DELETE LEAD ERROR:", error);
+
+      alert(error.message || "Failed to delete lead.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  /* =========================
+     UPDATE STATUS
+  ========================= */
+
+  const updateStatus = async (id, status) => {
+    try {
+      setUpdatingStatus(true);
+
+      const response = await fetch("/api/admin/leads", {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          status,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update status.");
+      }
+
+      /* Update table */
+
+      setLeads((prev) =>
+        prev.map((lead) =>
+          lead._id === id
+            ? {
+                ...lead,
+                status,
+              }
+            : lead,
+        ),
+      );
+
+      /* Update modal */
+
+      if (selectedLead?._id === id) {
+        setSelectedLead((prev) => ({
+          ...prev,
+          status,
+        }));
+      }
+    } catch (error) {
+      console.error("UPDATE STATUS ERROR:", error);
+
+      alert(error.message || "Failed to update status.");
+    } finally {
+      setUpdatingStatus(false);
     }
   };
 
   return (
     <div className="space-y-5 lg:space-y-6">
-      {/* Header */}
+      {/* ================= HEADER ================= */}
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
@@ -121,167 +257,226 @@ export default function LeadManagementPage() {
           </p>
         </div>
 
-        <div className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-lg sm:w-fit">
-          <Users size={18} />
-          Total Leads : {leads.length}
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <button
+            onClick={fetchLeads}
+            disabled={loading}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          >
+            {loading ? (
+              <Loader2 size={17} className="animate-spin" />
+            ) : (
+              <RefreshCw size={17} />
+            )}
+            Refresh
+          </button>
+
+          <div className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-lg sm:w-fit">
+            <Users size={18} />
+            Total Leads : {leads.length}
+          </div>
         </div>
       </div>
 
-      {/* ================= Desktop Table ================= */}
+      {/* ================= ERROR ================= */}
 
-      <div className="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm lg:block">
-        <table className="min-w-full">
-          <thead className="bg-slate-50">
-            <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
-                Name
-              </th>
+      {error && (
+        <div className="flex flex-col gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3">
+            <AlertCircle size={20} className="mt-0.5 shrink-0 text-red-600" />
 
-              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
-                Email
-              </th>
+            <div>
+              <p className="font-semibold text-red-800">Failed to load leads</p>
 
-              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
-                Phone
-              </th>
+              <p className="mt-1 text-sm text-red-600">{error}</p>
+            </div>
+          </div>
 
-              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
-                Status
-              </th>
-
-              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
-                Date
-              </th>
-
-              <th className="px-6 py-4 text-right text-sm font-semibold text-slate-500">
-                Actions
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {leads.map((lead) => (
-              <tr
-                key={lead.id}
-                className="border-t border-slate-100 transition-colors duration-300 hover:bg-slate-50"
-              >
-                <td className="px-6 py-5">
-                  <div className="font-semibold text-slate-900">
-                    {lead.name}
-                  </div>
-                </td>
-
-                <td className="px-6 py-5 text-slate-600">{lead.email}</td>
-
-                <td className="px-6 py-5 text-slate-600">{lead.phone}</td>
-
-                <td className="px-6 py-5">
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      lead.status === "New"
-                        ? "bg-emerald-100 text-emerald-700"
-                        : lead.status === "Contacted"
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-slate-200 text-slate-700"
-                    }`}
-                  >
-                    {lead.status}
-                  </span>
-                </td>
-
-                <td className="px-6 py-5 text-slate-500">{lead.date}</td>
-
-                <td className="px-6 py-5">
-                  <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => handleView(lead)}
-                      className="rounded-xl border border-cyan-200 bg-cyan-50 p-2 text-cyan-700 transition-all duration-300 hover:bg-cyan-100"
-                    >
-                      <Eye size={17} />
-                    </button>
-
-                    <button
-                      onClick={() => handleDelete(lead)}
-                      className="rounded-xl border border-red-200 bg-red-50 p-2 text-red-600 transition-all duration-300 hover:bg-red-100"
-                    >
-                      <Trash2 size={17} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* ================= Mobile Cards ================= */}
-
-      <div className="grid gap-4 lg:hidden">
-        {leads.map((lead) => (
-          <motion.div
-            key={lead.id}
-            whileHover={{
-              y: -2,
-            }}
-            className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+          <button
+            onClick={fetchLeads}
+            className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
           >
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0 flex-1">
-                <h3 className="truncate text-lg font-bold text-slate-900">
-                  {lead.name}
-                </h3>
+            Try Again
+          </button>
+        </div>
+      )}
 
-                <p className="mt-2 break-all text-sm text-slate-500">
-                  {lead.email}
-                </p>
+      {/* ================= LOADING ================= */}
 
-                <p className="mt-1 text-sm text-slate-500">{lead.phone}</p>
+      {loading && !error && (
+        <div className="rounded-2xl border border-slate-200 bg-white px-6 py-20 text-center shadow-sm">
+          <Loader2 size={34} className="mx-auto animate-spin text-violet-600" />
 
-                <div className="mt-3 flex flex-wrap items-center gap-2">
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      lead.status === "New"
-                        ? "bg-emerald-100 text-emerald-700"
-                        : lead.status === "Contacted"
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-slate-200 text-slate-700"
-                    }`}
-                  >
-                    {lead.status}
-                  </span>
+          <p className="mt-4 text-sm font-medium text-slate-600">
+            Loading leads...
+          </p>
+        </div>
+      )}
 
-                  <span className="text-xs text-slate-400">{lead.date}</span>
+      {/* ================= DESKTOP TABLE ================= */}
+
+      {!loading && !error && leads.length > 0 && (
+        <div className="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm lg:block">
+          <table className="min-w-full">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
+                  Name
+                </th>
+
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
+                  Email
+                </th>
+
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
+                  Phone
+                </th>
+
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
+                  Status
+                </th>
+
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-500">
+                  Date
+                </th>
+
+                <th className="px-6 py-4 text-right text-sm font-semibold text-slate-500">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {leads.map((lead) => (
+                <tr
+                  key={lead._id}
+                  className="border-t border-slate-100 transition-colors duration-300 hover:bg-slate-50"
+                >
+                  <td className="px-6 py-5">
+                    <div className="font-semibold text-slate-900">
+                      {lead.name}
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-5 text-slate-600">{lead.email}</td>
+
+                  <td className="px-6 py-5 text-slate-600">{lead.phone}</td>
+
+                  <td className="px-6 py-5">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusStyle(
+                        lead.status,
+                      )}`}
+                    >
+                      {lead.status}
+                    </span>
+                  </td>
+
+                  <td className="px-6 py-5 text-slate-500">
+                    {formatDate(lead.createdAt)}
+                  </td>
+
+                  <td className="px-6 py-5">
+                    <div className="flex justify-end gap-2">
+                      <button
+                        onClick={() => handleView(lead)}
+                        className="rounded-xl border border-cyan-200 bg-cyan-50 p-2 text-cyan-700 transition-all duration-300 hover:bg-cyan-100"
+                      >
+                        <Eye size={17} />
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(lead)}
+                        className="rounded-xl border border-red-200 bg-red-50 p-2 text-red-600 transition-all duration-300 hover:bg-red-100"
+                      >
+                        <Trash2 size={17} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* ================= MOBILE CARDS ================= */}
+
+      {!loading && !error && leads.length > 0 && (
+        <div className="grid gap-4 lg:hidden">
+          {leads.map((lead) => (
+            <motion.div
+              key={lead._id}
+              whileHover={{
+                y: -2,
+              }}
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-lg font-bold text-slate-900">
+                    {lead.name}
+                  </h3>
+
+                  <p className="mt-2 break-all text-sm text-slate-500">
+                    {lead.email}
+                  </p>
+
+                  <p className="mt-1 text-sm text-slate-500">{lead.phone}</p>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusStyle(
+                        lead.status,
+                      )}`}
+                    >
+                      {lead.status}
+                    </span>
+
+                    <span className="text-xs text-slate-400">
+                      {formatDate(lead.createdAt)}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="mt-5 grid grid-cols-2 gap-3">
-              <button
-                onClick={() => handleView(lead)}
-                className="rounded-xl border border-cyan-200 bg-cyan-50 py-3 text-sm font-semibold text-cyan-700 transition-all duration-300 hover:bg-cyan-100"
-              >
-                View
-              </button>
+              <div className="mt-5 grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => handleView(lead)}
+                  className="rounded-xl border border-cyan-200 bg-cyan-50 py-3 text-sm font-semibold text-cyan-700 transition-all duration-300 hover:bg-cyan-100"
+                >
+                  View
+                </button>
 
-              <button
-                onClick={() => handleDelete(lead)}
-                className="rounded-xl border border-red-200 bg-red-50 py-3 text-sm font-semibold text-red-600 transition-all duration-300 hover:bg-red-100"
-              >
-                Delete
-              </button>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+                <button
+                  onClick={() => handleDelete(lead)}
+                  className="rounded-xl border border-red-200 bg-red-50 py-3 text-sm font-semibold text-red-600 transition-all duration-300 hover:bg-red-100"
+                >
+                  Delete
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
 
-      {/* ================= View Lead Modal ================= */}
+      {/* ================= VIEW MODAL ================= */}
+
       <AnimatePresence>
         {viewModal && selectedLead && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
+            transition={{
+              duration: 0.2,
+            }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 backdrop-blur-sm sm:p-4"
           >
             <motion.div
@@ -300,10 +495,9 @@ export default function LeadManagementPage() {
                 scale: 0.97,
                 y: 20,
               }}
-              transition={{ duration: 0.2 }}
-              className="flex h-auto max-h-[95vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+              className="flex max-h-[95vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
             >
-              {/* Header */}
+              {/* HEADER */}
 
               <div className="flex items-center justify-between border-b border-slate-200 px-4 py-4 sm:px-6">
                 <div>
@@ -324,11 +518,11 @@ export default function LeadManagementPage() {
                 </button>
               </div>
 
-              {/* Body */}
+              {/* BODY */}
 
               <div className="flex-1 overflow-y-auto p-4 sm:p-6">
                 <div className="space-y-4">
-                  {/* Name */}
+                  {/* NAME */}
 
                   <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                     <div className="flex items-center gap-3">
@@ -346,7 +540,7 @@ export default function LeadManagementPage() {
                     </div>
                   </div>
 
-                  {/* Email */}
+                  {/* EMAIL */}
 
                   <div className="rounded-xl border border-slate-200 p-4">
                     <div className="flex items-start gap-3">
@@ -364,7 +558,7 @@ export default function LeadManagementPage() {
                     </div>
                   </div>
 
-                  {/* Phone */}
+                  {/* PHONE */}
 
                   <div className="rounded-xl border border-slate-200 p-4">
                     <div className="flex items-start gap-3">
@@ -382,7 +576,7 @@ export default function LeadManagementPage() {
                     </div>
                   </div>
 
-                  {/* Message */}
+                  {/* MESSAGE */}
 
                   <div className="rounded-xl border border-slate-200 p-4">
                     <div className="flex items-start gap-3">
@@ -402,10 +596,10 @@ export default function LeadManagementPage() {
                     </div>
                   </div>
 
-                  {/* Bottom */}
+                  {/* DATE + STATUS */}
 
                   <div className="grid gap-4 sm:grid-cols-2">
-                    {/* Date */}
+                    {/* DATE */}
 
                     <div className="rounded-xl border border-slate-200 p-4">
                       <div className="flex items-center gap-3">
@@ -417,13 +611,13 @@ export default function LeadManagementPage() {
                           <p className="text-xs text-slate-500">Submitted On</p>
 
                           <p className="mt-1 text-sm font-semibold text-slate-900">
-                            {selectedLead.date}
+                            {formatDate(selectedLead.createdAt)}
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Status */}
+                    {/* STATUS */}
 
                     <div className="rounded-xl border border-slate-200 p-4">
                       <label className="mb-2 block text-sm font-medium text-slate-700">
@@ -432,33 +626,39 @@ export default function LeadManagementPage() {
 
                       <select
                         value={selectedLead.status}
+                        disabled={updatingStatus}
                         onChange={(e) =>
-                          updateStatus(selectedLead.id, e.target.value)
+                          updateStatus(selectedLead._id, e.target.value)
                         }
-                        className="h-11 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-fuchsia-500"
+                        className="h-11 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm outline-none transition focus:border-fuchsia-500 disabled:cursor-not-allowed disabled:bg-slate-100"
                       >
                         <option value="New">New</option>
+
                         <option value="Contacted">Contacted</option>
+
                         <option value="Closed">Closed</option>
                       </select>
 
-                      <span
-                        className={`mt-3 inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-                          selectedLead.status === "New"
-                            ? "bg-emerald-100 text-emerald-700"
-                            : selectedLead.status === "Contacted"
-                              ? "bg-blue-100 text-blue-700"
-                              : "bg-slate-200 text-slate-700"
-                        }`}
-                      >
-                        {selectedLead.status}
-                      </span>
+                      {updatingStatus ? (
+                        <div className="mt-3 inline-flex items-center gap-2 text-xs text-slate-500">
+                          <Loader2 size={13} className="animate-spin" />
+                          Updating...
+                        </div>
+                      ) : (
+                        <span
+                          className={`mt-3 inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusStyle(
+                            selectedLead.status,
+                          )}`}
+                        >
+                          {selectedLead.status}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Footer */}
+              {/* FOOTER */}
 
               <div className="border-t border-slate-200 p-4 sm:px-6 sm:py-5">
                 <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
@@ -482,12 +682,20 @@ export default function LeadManagementPage() {
         )}
       </AnimatePresence>
 
+      {/* ================= DELETE MODAL ================= */}
+
       <AnimatePresence>
         {deleteModal && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
             className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4"
           >
             <motion.div
@@ -506,10 +714,9 @@ export default function LeadManagementPage() {
                 scale: 0.95,
                 y: 20,
               }}
-              transition={{ duration: 0.2 }}
               className="w-full max-w-md rounded-2xl bg-white shadow-2xl"
             >
-              {/* Header */}
+              {/* HEADER */}
 
               <div className="border-b border-slate-200 px-6 py-4">
                 <h3 className="text-lg font-bold text-slate-900">
@@ -517,7 +724,7 @@ export default function LeadManagementPage() {
                 </h3>
               </div>
 
-              {/* Body */}
+              {/* BODY */}
 
               <div className="px-6 py-6">
                 <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
@@ -541,21 +748,25 @@ export default function LeadManagementPage() {
                 </p>
               </div>
 
-              {/* Footer */}
+              {/* FOOTER */}
 
               <div className="flex flex-col-reverse gap-3 border-t border-slate-200 p-5 sm:flex-row sm:justify-end">
                 <button
                   onClick={cancelDelete}
-                  className="rounded-xl border border-slate-300 px-5 py-2.5 font-medium transition hover:bg-slate-100"
+                  disabled={deleting}
+                  className="rounded-xl border border-slate-300 px-5 py-2.5 font-medium transition hover:bg-slate-100 disabled:opacity-50"
                 >
                   Cancel
                 </button>
 
                 <button
                   onClick={confirmDelete}
-                  className="rounded-xl bg-red-600 px-5 py-2.5 font-semibold text-white transition hover:bg-red-700"
+                  disabled={deleting}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-2.5 font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  Delete Lead
+                  {deleting && <Loader2 size={16} className="animate-spin" />}
+
+                  {deleting ? "Deleting..." : "Delete Lead"}
                 </button>
               </div>
             </motion.div>
@@ -563,9 +774,9 @@ export default function LeadManagementPage() {
         )}
       </AnimatePresence>
 
-      {/* ================= Empty State ================= */}
+      {/* ================= EMPTY STATE ================= */}
 
-      {leads.length === 0 && (
+      {!loading && !error && leads.length === 0 && (
         <div className="rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center shadow-sm sm:px-10 sm:py-20">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 text-white shadow-lg">
             <Users size={36} />

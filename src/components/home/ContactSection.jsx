@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -8,16 +10,13 @@ import {
   Phone,
   MapPin,
   ArrowRight,
-  CheckCircle2,
+  MessageCircleMore,
 } from "lucide-react";
-import { MessageCircleMore } from "lucide-react";
 
-const contactInfo = [
+const contactStyles = [
   {
     icon: Mail,
     title: "Email",
-    value: "info@adslyvemedia.com",
-    href: "mailto:info@adslyvemedia.com",
     gradient: "from-cyan-500 via-blue-500 to-violet-600",
     bg: "bg-cyan-50",
     border: "border-cyan-200",
@@ -25,8 +24,6 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Phone",
-    value: "+91 XXXXX XXXXX",
-    href: "tel:+91XXXXXXXXXX",
     gradient: "from-emerald-500 via-teal-500 to-cyan-500",
     bg: "bg-emerald-50",
     border: "border-emerald-200",
@@ -34,8 +31,6 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Location",
-    value: "Gurugram, India",
-    href: "#",
     gradient: "from-fuchsia-600 via-violet-600 to-indigo-600",
     bg: "bg-fuchsia-50",
     border: "border-fuchsia-200",
@@ -43,10 +38,57 @@ const contactInfo = [
 ];
 
 export default function Contact() {
+  const [contact, setContact] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContact = async () => {
+      try {
+        const response = await axios.get("/api/admin/contact");
+
+        if (response.data.success) {
+          setContact(response.data.contact);
+        }
+      } catch (error) {
+        console.error("FETCH CONTACT ERROR:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContact();
+  }, []);
+
+  const getContactData = () => {
+    if (!contact) return [];
+
+    return [
+      {
+        ...contactStyles[0],
+        value: contact.email,
+        href: contact.email ? `mailto:${contact.email}` : "#",
+      },
+      {
+        ...contactStyles[1],
+        value: contact.phone,
+        href: contact.phone
+          ? `tel:${contact.phone.replace(/[^\d+]/g, "")}`
+          : "#",
+      },
+      {
+        ...contactStyles[2],
+        value: contact.address,
+        href: "#",
+      },
+    ];
+  };
+
+  const contactInfo = getContactData();
+
   return (
     <section
       id="contact"
-      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py- py-10"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-16 lg:py-20"
     >
       {/* Background */}
 
@@ -96,15 +138,30 @@ export default function Contact() {
         {/* Heading */}
 
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          initial={{
+            opacity: 0,
+            y: 40,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+          }}
+          transition={{
+            duration: 0.8,
+          }}
           className="mx-auto max-w-3xl text-center"
         >
           <motion.div
-            animate={{ y: [0, -5, 0] }}
-            transition={{ duration: 3, repeat: Infinity }}
+            animate={{
+              y: [0, -5, 0],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+            }}
             className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/90 px-5 py-2 text-sm font-semibold text-cyan-700 shadow-lg backdrop-blur-xl"
           >
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white">
@@ -129,91 +186,116 @@ export default function Contact() {
         {/* Contact Card */}
 
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative mt-12 overflow-hidden sm:mt-14 "
+          initial={{
+            opacity: 0,
+            y: 40,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+          }}
+          transition={{
+            duration: 0.8,
+          }}
+          className="relative mt-12 overflow-hidden sm:mt-14"
         >
-          {/* Contact Cards */}
+          {/* Loading */}
 
-          <div className="relative grid gap-3 md:grid-cols-3 lg:gap-4">
-            {contactInfo.map((item, index) => {
-              const Icon = item.icon;
+          {loading ? (
+            <div className="grid gap-3 md:grid-cols-3 lg:gap-4">
+              {[1, 2, 3].map((item) => (
+                <div
+                  key={item}
+                  className="h-[170px] animate-pulse rounded-[22px] border border-slate-200 bg-white"
+                />
+              ))}
+            </div>
+          ) : contact ? (
+            <div className="relative grid gap-3 md:grid-cols-3 lg:gap-4">
+              {contactInfo.map((item, index) => {
+                const Icon = item.icon;
 
-              return (
-                <motion.a
-                  key={item.title}
-                  href={item.href}
-                  initial={{
-                    opacity: 0,
-                    y: 20,
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  viewport={{
-                    once: true,
-                  }}
-                  transition={{
-                    delay: index * 0.1,
-                  }}
-                  whileHover={{
-                    y: -5,
-                  }}
-                  className={`group relative overflow-hidden rounded-[18px] border ${item.border} bg-white px-4 py-3.5 shadow-sm transition-all duration-500 hover:shadow-lg sm:rounded-[20px] sm:px-5 sm:py-4 lg:rounded-[22px] lg:px-5 lg:py-4`}
-                >
-                  {/* Left Gradient */}
-
-                  <div
-                    className={`absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b ${item.gradient}`}
-                  />
-
-                  {/* Hover Glow */}
-
-                  <div
-                    className={`absolute -right-8 -top-8 h-24 w-24 rounded-full ${item.bg} opacity-0 blur-3xl transition duration-500 group-hover:opacity-100`}
-                  />
-
-                  {/* Icon */}
-
-                  <div
-                    className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r ${item.gradient} text-white shadow-md transition duration-500 group-hover:scale-110 group-hover:rotate-6 sm:h-12 sm:w-12 lg:h-14 lg:w-14`}
+                return (
+                  <motion.a
+                    key={item.title}
+                    href={item.href}
+                    initial={{
+                      opacity: 0,
+                      y: 20,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                    }}
+                    transition={{
+                      delay: index * 0.1,
+                    }}
+                    whileHover={{
+                      y: -5,
+                    }}
+                    className={`group relative overflow-hidden rounded-[18px] border ${item.border} bg-white px-4 py-3.5 shadow-sm transition-all duration-500 hover:shadow-lg sm:rounded-[20px] sm:px-5 sm:py-4 lg:rounded-[22px] lg:px-5 lg:py-4`}
                   >
-                    <Icon
-                      size={20}
-                      className="sm:h-[22px] sm:w-[22px] lg:h-6 lg:w-6"
+                    {/* Left Gradient */}
+
+                    <div
+                      className={`absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b ${item.gradient}`}
                     />
-                  </div>
 
-                  {/* Title */}
+                    {/* Hover Glow */}
 
-                  <p className="mt-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500 sm:mt-3 sm:text-[11px]">
-                    {item.title}
-                  </p>
+                    <div
+                      className={`absolute -right-8 -top-8 h-24 w-24 rounded-full ${item.bg} opacity-0 blur-3xl transition duration-500 group-hover:opacity-100`}
+                    />
 
-                  {/* Value */}
+                    {/* Icon */}
 
-                  <h3 className="mt-1 break-words text-base font-bold leading-6 text-slate-900 sm:mt-1.5 sm:text-lg sm:leading-7">
-                    {item.value}
-                  </h3>
-
-                  {/* Bottom */}
-
-                  <div className="mt-3.5 flex items-center justify-between border-t border-slate-100 pt-3 sm:mt-4 sm:pt-3">
-                    <div className="flex gap-1.5">
-                      <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                      <span className="h-2 w-2 rounded-full bg-cyan-400" />
-                      <span className="h-2 w-2 rounded-full bg-fuchsia-500" />
+                    <div
+                      className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r ${item.gradient} text-white shadow-md transition duration-500 group-hover:scale-110 group-hover:rotate-6 sm:h-12 sm:w-12 lg:h-14 lg:w-14`}
+                    >
+                      <Icon
+                        size={20}
+                        className="sm:h-[22px] sm:w-[22px] lg:h-6 lg:w-6"
+                      />
                     </div>
 
-                    <ArrowRight className="h-4 w-4 text-slate-400 transition duration-300 group-hover:translate-x-1.5 group-hover:text-cyan-600 sm:h-[18px] sm:w-[18px]" />
-                  </div>
-                </motion.a>
-              );
-            })}
-          </div>
+                    {/* Title */}
+
+                    <p className="mt-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500 sm:mt-3 sm:text-[11px]">
+                      {item.title}
+                    </p>
+
+                    {/* Value */}
+
+                    <h3 className="mt-1 break-words text-base font-bold leading-6 text-slate-900 sm:mt-1.5 sm:text-lg sm:leading-7">
+                      {item.value || "Not available"}
+                    </h3>
+
+                    {/* Bottom */}
+
+                    <div className="mt-3.5 flex items-center justify-between border-t border-slate-100 pt-3 sm:mt-4 sm:pt-3">
+                      <div className="flex gap-1.5">
+                        <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                        <span className="h-2 w-2 rounded-full bg-cyan-400" />
+                        <span className="h-2 w-2 rounded-full bg-fuchsia-500" />
+                      </div>
+
+                      <ArrowRight className="h-4 w-4 text-slate-400 transition duration-300 group-hover:translate-x-1.5 group-hover:text-cyan-600 sm:h-[18px] sm:w-[18px]" />
+                    </div>
+                  </motion.a>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center text-sm text-red-600">
+              Unable to load contact information.
+            </div>
+          )}
 
           {/* Bottom CTA */}
 
@@ -235,8 +317,6 @@ export default function Contact() {
             className="mt-5 overflow-hidden rounded-[20px] bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-4 sm:mt-6 sm:rounded-[22px] sm:p-5 lg:p-6"
           >
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-5">
-              {/* Left */}
-
               <div className="flex-1">
                 <h3 className="text-lg font-bold leading-tight text-white sm:text-xl lg:text-[26px]">
                   Ready to Grow Faster?
@@ -248,8 +328,6 @@ export default function Contact() {
                   and build a stronger digital presence.
                 </p>
               </div>
-
-              {/* Button */}
 
               <Link
                 href="#"

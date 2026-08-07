@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { motion } from "framer-motion";
+
 import {
   Search,
   Megaphone,
@@ -11,170 +14,108 @@ import {
   Globe,
   Mail,
   Check,
-  Sparkles,
+  BriefcaseBusiness,
+  Loader2,
 } from "lucide-react";
-import { BriefcaseBusiness } from "lucide-react";
+import { Code } from "lucide-react";
+import { BarChart3 } from "lucide-react";
+import { Smartphone } from "lucide-react";
+import { Monitor } from "lucide-react";
+import { Palette } from "lucide-react";
+import { Camera } from "lucide-react";
+import { Video } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
+import { Target } from "lucide-react";
+import { Users } from "lucide-react";
+import { Settings } from "lucide-react";
+import { Rocket } from "lucide-react";
+import { Lightbulb } from "lucide-react";
+import { Star } from "lucide-react";
+import { CheckCircle } from "lucide-react";
+import { Database } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
+import { FileText } from "lucide-react";
+import { PenTool } from "lucide-react";
+import { Layout } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 
-const services = [
-  {
-    title: "Search Engine Optimization (SEO)",
-    subtitle: "Rank Higher. Get Found. Grow Organically.",
-    icon: Search,
-    color: "from-fuchsia-600 via-violet-600 to-blue-500",
-    description:
-      "Our SEO strategies help your business appear where your customers are searching.",
-    features: [
-      "Website SEO Audit",
-      "Keyword Research",
-      "On-Page SEO",
-      "Technical SEO",
-      "Local SEO",
-      "Content Optimization",
-      "Link Building",
-      "Monthly SEO Reporting",
-    ],
-  },
+const iconMap = {
+  BriefcaseBusiness,
+  Search,
+  Code,
+  BarChart3,
+  Megaphone,
+  Globe,
+  Smartphone,
+  Monitor,
+  Palette,
+  Camera,
+  Video,
+  Mail,
+  ShoppingCart,
+  Target,
+  TrendingUp,
+  Users,
+  Settings,
+  Rocket,
+  Lightbulb,
+  Star,
+  CheckCircle,
+  Database,
+  ShieldCheck,
+  FileText,
+  PenTool,
+  Layout,
+  MessageSquare,
+};
 
-  {
-    title: "Digital Marketing",
-    subtitle: "End-to-End Digital Marketing Solutions",
-    icon: Megaphone,
-    color: "from-blue-600 via-violet-600 to-fuchsia-600",
-    description:
-      "Integrated marketing strategies that strengthen your online presence and accelerate business growth.",
-    features: [
-      "Brand Strategy",
-      "Content Marketing",
-      "Social Media Marketing",
-      "Email Marketing",
-      "Online Reputation Management",
-      "Website Optimization",
-      "Lead Generation",
-      "Marketing Analytics",
-    ],
-  },
-
-  {
-    title: "Performance Marketing",
-    subtitle: "Every Click Should Generate Results",
-    icon: TrendingUp,
-    color: "from-fuchsia-600 via-violet-600 to-blue-500",
-    description:
-      "Generate quality leads, sales, and conversions while optimizing every marketing dollar.",
-    features: [
-      "Lead Generation Campaigns",
-      "Sales Campaigns",
-      "Conversion Optimization",
-      "Landing Page Optimization",
-      "Audience Targeting",
-      "Funnel Optimization",
-      "Retargeting Campaigns",
-      "ROI Tracking",
-    ],
-  },
-
-  {
-    title: "Google Ads",
-    subtitle: "Reach Customers Exactly When They're Searching",
-    icon: Chrome,
-    color: "from-blue-600 via-cyan-500 to-violet-600",
-    description:
-      "Highly optimized Google advertising campaigns that maximize visibility and ROI.",
-    features: [
-      "Search Ads",
-      "Display Ads",
-      "Shopping Ads",
-      "YouTube Ads",
-      "App Campaigns",
-      "Performance Max Campaigns",
-      "Remarketing Campaigns",
-    ],
-  },
-
-  {
-    title: "Meta Ads",
-    subtitle: "Reach Millions Across Facebook & Instagram",
-    icon: Instagram,
-    color: "from-pink-600 via-fuchsia-600 to-violet-600",
-    description:
-      "Advertising campaigns designed to drive engagement, generate leads and increase sales.",
-    features: [
-      "Facebook Advertising",
-      "Instagram Advertising",
-      "Lead Generation Ads",
-      "Conversion Campaigns",
-      "E-commerce Ads",
-      "Remarketing Campaigns",
-      "Video Advertising",
-      "Brand Awareness Campaigns",
-    ],
-  },
-
-  {
-    title: "Social Media Marketing",
-    subtitle: "Build Communities That Convert",
-    icon: Share2,
-    color: "from-violet-600 via-blue-600 to-cyan-500",
-    description:
-      "Grow your brand across social media platforms with engaging content and strategic campaigns.",
-    features: [
-      "Content Strategy",
-      "Creative Design",
-      "Social Media Management",
-      "Audience Growth",
-      "Influencer Campaigns",
-      "Paid Social Campaigns",
-      "Analytics",
-      "Community Management",
-    ],
-  },
-
-  {
-    title: "Web & App Development",
-    subtitle: "Modern Digital Experiences",
-    icon: Globe,
-    color: "from-cyan-600 via-blue-600 to-violet-600",
-    description:
-      "Professional websites and scalable web & mobile applications built for performance.",
-    features: [
-      "Business Websites",
-      "E-commerce",
-      "Landing Pages",
-      "Web Applications",
-      "Mobile Apps",
-      "UI/UX Design",
-      "Maintenance",
-      "Performance Optimization",
-    ],
-  },
-
-  {
-    title: "Email Marketing",
-    subtitle: "Convert Subscribers into Customers",
-    icon: Mail,
-    color: "from-fuchsia-600 via-violet-600 to-indigo-600",
-    description:
-      "Automated email campaigns that nurture leads, increase retention and boost revenue.",
-    features: [
-      "Email Campaigns",
-      "Automation",
-      "Newsletter Design",
-      "Lead Nurturing",
-      "Promotional Emails",
-      "CRM Integration",
-      "A/B Testing",
-      "Performance Reports",
-    ],
-  },
-];
+const defaultIcon = BriefcaseBusiness;
 
 export default function Services() {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  /* =========================
+     FETCH SERVICES
+  ========================= */
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await axios.get("/api/admin/services");
+
+        if (response.data?.success) {
+          setServices(response.data.services || []);
+        } else {
+          setError(response.data?.message || "Unable to load services.");
+        }
+      } catch (error) {
+        console.error("FETCH SERVICES ERROR:", error);
+
+        setError(
+          error.response?.data?.message ||
+            "Unable to load services. Please try again later.",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
   return (
     <section
       id="services"
       className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-10"
     >
-      {/* Animated Background */}
+      {/* =========================
+          ANIMATED BACKGROUND
+      ========================= */}
 
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <motion.div
@@ -217,7 +158,9 @@ export default function Services() {
       </div>
 
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        {/* HEADER */}
+        {/* =========================
+            HEADER
+        ========================= */}
 
         <motion.div
           initial={{
@@ -265,107 +208,166 @@ export default function Services() {
           </p>
         </motion.div>
 
-        {/* CARDS */}
+        {/* =========================
+            LOADING
+        ========================= */}
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {services.map((service, index) => {
-            const Icon = service.icon;
+        {loading && (
+          <div className="mt-10 flex min-h-[250px] items-center justify-center">
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="h-8 w-8 animate-spin text-violet-600" />
 
-            return (
-              <motion.div
-                key={service.title}
-                initial={{
-                  opacity: 0,
-                  y: 30,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                viewport={{
-                  once: true,
-                }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.06,
-                }}
-                whileHover={{
-                  y: -6,
-                }}
-                className="group relative overflow-hidden rounded-[22px] border border-white/70 bg-white/90 p-5 shadow-[0_18px_45px_rgba(15,23,42,.08)] backdrop-blur-xl transition-all duration-500"
-              >
-                {/* Top Border */}
+              <p className="text-sm font-medium text-slate-500">
+                Loading services...
+              </p>
+            </div>
+          </div>
+        )}
 
-                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500" />
+        {/* =========================
+            ERROR
+        ========================= */}
 
-                {/* Hover Glow */}
+        {!loading && error && (
+          <div className="mt-10 flex min-h-[200px] items-center justify-center">
+            <div className="max-w-md rounded-2xl border border-red-200 bg-red-50 px-6 py-5 text-center">
+              <p className="font-semibold text-red-700">
+                Unable to load services
+              </p>
 
-                <div className="absolute -right-14 -top-14 h-32 w-32 rounded-full bg-gradient-to-br from-fuchsia-200 to-blue-200 opacity-0 blur-3xl transition duration-500 group-hover:opacity-100" />
+              <p className="mt-1 text-sm text-red-600">{error}</p>
+            </div>
+          </div>
+        )}
 
-                {/* Icon */}
+        {/* =========================
+            EMPTY STATE
+        ========================= */}
 
+        {!loading && !error && services.length === 0 && (
+          <div className="mt-10 flex min-h-[250px] items-center justify-center">
+            <div className="rounded-2xl border border-slate-200 bg-white px-8 py-8 text-center shadow-sm">
+              <BriefcaseBusiness className="mx-auto h-10 w-10 text-slate-400" />
+
+              <h3 className="mt-3 text-lg font-semibold text-slate-900">
+                No Services Available
+              </h3>
+
+              <p className="mt-1 text-sm text-slate-500">
+                Our services will be available here soon.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* =========================
+            SERVICE CARDS
+        ========================= */}
+
+        {!loading && !error && services.length > 0 && (
+          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {services.map((service, index) => {
+              const Icon = iconMap[service.icon] || defaultIcon;
+
+              return (
                 <motion.div
-                  animate={{
-                    y: [0, -4, 0],
+                  key={service._id}
+                  initial={{
+                    opacity: 0,
+                    y: 30,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  viewport={{
+                    once: true,
                   }}
                   transition={{
-                    duration: 4,
-                    repeat: Infinity,
+                    duration: 0.5,
+                    delay: index * 0.06,
                   }}
-                  className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-r ${service.color} text-white shadow-lg`}
+                  whileHover={{
+                    y: -6,
+                  }}
+                  className="group relative overflow-hidden rounded-[22px] border border-white/70 bg-white/90 p-5 shadow-[0_18px_45px_rgba(15,23,42,.08)] backdrop-blur-xl transition-all duration-500"
                 >
-                  <Icon size={24} />
+                  {/* Top Border */}
+
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500" />
+
+                  {/* Hover Glow */}
+
+                  <div className="absolute -right-14 -top-14 h-32 w-32 rounded-full bg-gradient-to-br from-fuchsia-200 to-blue-200 opacity-0 blur-3xl transition duration-500 group-hover:opacity-100" />
+
+                  {/* Icon */}
+
+                  <motion.div
+                    animate={{
+                      y: [0, -4, 0],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                    }}
+                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 text-white shadow-lg"
+                  >
+                    <Icon size={24} />
+                  </motion.div>
+
+                  {/* Title */}
+
+                  <h3 className="mt-4 text-xl font-bold leading-tight text-slate-900">
+                    {service.title}
+                  </h3>
+
+                  {/* Subtitle */}
+
+                  <p className="mt-1.5 text-sm font-semibold text-fuchsia-600">
+                    {service.subtitle}
+                  </p>
+
+                  {/* Description */}
+
+                  <p className="mt-3 text-[15px] leading-6 text-slate-600">
+                    {service.description}
+                  </p>
+
+                  {/* Included */}
+
+                  {Array.isArray(service.features) &&
+                    service.features.length > 0 && (
+                      <div className="mt-4 rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
+                        <h4 className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-800">
+                          What's Included
+                        </h4>
+
+                        <div className="grid gap-2">
+                          {service.features.map((feature, featureIndex) => (
+                            <motion.div
+                              key={`${service._id}-${featureIndex}`}
+                              whileHover={{
+                                x: 2,
+                              }}
+                              className="flex items-center gap-2"
+                            >
+                              <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-blue-500 text-white">
+                                <Check size={10} />
+                              </span>
+
+                              <span className="text-sm leading-5 text-slate-700">
+                                {feature}
+                              </span>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                 </motion.div>
-
-                {/* Title */}
-
-                <h3 className="mt-4 text-xl font-bold leading-tight text-slate-900">
-                  {service.title}
-                </h3>
-
-                {/* Subtitle */}
-
-                <p className="mt-1.5 text-sm font-semibold text-fuchsia-600">
-                  {service.subtitle}
-                </p>
-
-                {/* Description */}
-
-                <p className="mt-3 text-[15px] leading-6 text-slate-600">
-                  {service.description}
-                </p>
-
-                {/* Included */}
-
-                <div className="mt-4 rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
-                  <h4 className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-800">
-                    What's Included
-                  </h4>
-
-                  <div className="grid gap-2">
-                    {service.features.map((feature) => (
-                      <motion.div
-                        key={feature}
-                        whileHover={{
-                          x: 2,
-                        }}
-                        className="flex items-center gap-2"
-                      >
-                        <span className="flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-blue-500 text-white">
-                          <Check size={10} />
-                        </span>
-
-                        <span className="text-sm leading-5 text-slate-700">
-                          {feature}
-                        </span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );
