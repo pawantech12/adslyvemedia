@@ -244,17 +244,6 @@ export default function AdminLoginPage() {
               )}
             </div>
 
-            {/* Forgot Password */}
-
-            <div className="flex justify-end">
-              <Link
-                href="#"
-                className="text-sm font-medium text-cyan-600 transition hover:text-fuchsia-600"
-              >
-                Forgot Password?
-              </Link>
-            </div>
-
             {/* Login Button */}
 
             <motion.button
