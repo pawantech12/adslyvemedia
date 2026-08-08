@@ -9,7 +9,6 @@ import {
   ShieldCheck,
   Sparkles,
   Zap,
-  CheckCircle2,
 } from "lucide-react";
 import { Rocket } from "lucide-react";
 

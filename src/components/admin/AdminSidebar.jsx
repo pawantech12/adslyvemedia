@@ -40,7 +40,7 @@ export default function AdminSidebar({ menu, sidebarOpen, setSidebarOpen }) {
       >
         <div className="flex h-full flex-col">
           <div className="flex items-center justify-center border-b py-4">
-            <Image src="/logo-dark.png" width={130} height={40} alt="logo" />
+            <Image src="/logo-dark.webp" width={130} height={40} alt="logo" />
           </div>
 
           <div className="flex-1 overflow-y-auto p-4">

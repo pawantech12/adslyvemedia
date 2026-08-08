@@ -8,9 +8,6 @@ import {
   Search,
   Megaphone,
   TrendingUp,
-  Chrome,
-  Instagram,
-  Share2,
   Globe,
   Mail,
   Check,
@@ -76,10 +73,6 @@ export default function Services() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  /* =========================
-     FETCH SERVICES
-  ========================= */
-
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -113,10 +106,6 @@ export default function Services() {
       id="services"
       className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 py-10"
     >
-      {/* =========================
-          ANIMATED BACKGROUND
-      ========================= */}
-
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <motion.div
           animate={{
@@ -158,10 +147,6 @@ export default function Services() {
       </div>
 
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        {/* =========================
-            HEADER
-        ========================= */}
-
         <motion.div
           initial={{
             opacity: 0,
@@ -208,10 +193,6 @@ export default function Services() {
           </p>
         </motion.div>
 
-        {/* =========================
-            LOADING
-        ========================= */}
-
         {loading && (
           <div className="mt-10 flex min-h-[250px] items-center justify-center">
             <div className="flex flex-col items-center gap-3">
@@ -224,10 +205,6 @@ export default function Services() {
           </div>
         )}
 
-        {/* =========================
-            ERROR
-        ========================= */}
-
         {!loading && error && (
           <div className="mt-10 flex min-h-[200px] items-center justify-center">
             <div className="max-w-md rounded-2xl border border-red-200 bg-red-50 px-6 py-5 text-center">
@@ -239,10 +216,6 @@ export default function Services() {
             </div>
           </div>
         )}
-
-        {/* =========================
-            EMPTY STATE
-        ========================= */}
 
         {!loading && !error && services.length === 0 && (
           <div className="mt-10 flex min-h-[250px] items-center justify-center">
@@ -259,10 +232,6 @@ export default function Services() {
             </div>
           </div>
         )}
-
-        {/* =========================
-            SERVICE CARDS
-        ========================= */}
 
         {!loading && !error && services.length > 0 && (
           <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -292,15 +261,9 @@ export default function Services() {
                   }}
                   className="group relative overflow-hidden rounded-[22px] border border-white/70 bg-white/90 p-5 shadow-[0_18px_45px_rgba(15,23,42,.08)] backdrop-blur-xl transition-all duration-500"
                 >
-                  {/* Top Border */}
-
                   <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500" />
 
-                  {/* Hover Glow */}
-
                   <div className="absolute -right-14 -top-14 h-32 w-32 rounded-full bg-gradient-to-br from-fuchsia-200 to-blue-200 opacity-0 blur-3xl transition duration-500 group-hover:opacity-100" />
-
-                  {/* Icon */}
 
                   <motion.div
                     animate={{
@@ -315,25 +278,17 @@ export default function Services() {
                     <Icon size={24} />
                   </motion.div>
 
-                  {/* Title */}
-
                   <h3 className="mt-4 text-xl font-bold leading-tight text-slate-900">
                     {service.title}
                   </h3>
-
-                  {/* Subtitle */}
 
                   <p className="mt-1.5 text-sm font-semibold text-fuchsia-600">
                     {service.subtitle}
                   </p>
 
-                  {/* Description */}
-
                   <p className="mt-3 text-[15px] leading-6 text-slate-600">
                     {service.description}
                   </p>
-
-                  {/* Included */}
 
                   {Array.isArray(service.features) &&
                     service.features.length > 0 && (

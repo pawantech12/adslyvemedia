@@ -34,7 +34,6 @@ import {
   PenTool,
   Layout,
   MessageSquare,
-  LucideIcon,
 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";

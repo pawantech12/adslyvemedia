@@ -21,12 +21,14 @@ export default function WebsiteSettings() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [loadingProfile, setLoadingProfile] = useState(false);
+  const [loadingSettings, setLoadingSettings] = useState(true);
+  const [savingSeo, setSavingSeo] = useState(false);
+  const [savingFooter, setSavingFooter] = useState(false);
 
   const [settings, setSettings] = useState({
-    metaTitle: "AdsLyve Media | Digital Marketing Agency",
-    metaDescription:
-      "AdsLyve Media is a performance-driven digital marketing agency offering SEO, Google Ads, Meta Ads, Social Media Marketing, Performance Marketing and Website Development services.",
-    footerCopyright: "© 2026 AdsLyve Media. All Rights Reserved.",
+    metaTitle: "",
+    metaDescription: "",
+    footerCopyright: "",
   });
 
   const {
@@ -47,48 +49,145 @@ export default function WebsiteSettings() {
 
   const newPassword = watch("newPassword");
 
-  // ==========================================
-  // Load Current Admin Profile
-  // ==========================================
-
   useEffect(() => {
-    const loadAdminProfile = async () => {
+    const loadData = async () => {
       try {
-        const response = await axios.get("/api/auth/me");
+        setLoadingSettings(true);
 
-        if (response.data?.success && response.data?.user) {
+        const [settingsResponse, profileResponse] = await Promise.all([
+          axios.get("/api/admin/settings"),
+          axios.get("/api/auth/me"),
+        ]);
+
+        if (settingsResponse.data?.success && settingsResponse.data?.settings) {
+          const data = settingsResponse.data.settings;
+
+          setSettings({
+            metaTitle: data.metaTitle || "",
+            metaDescription: data.metaDescription || "",
+            footerCopyright: data.footerCopyright || "",
+          });
+        }
+
+        if (profileResponse.data?.success && profileResponse.data?.user) {
+          const user = profileResponse.data.user;
+
           reset({
-            name: response.data.user.name || "",
-            email: response.data.user.email || "",
+            name: user.name || "",
+            email: user.email || "",
             currentPassword: "",
             newPassword: "",
             confirmPassword: "",
           });
         }
       } catch (error) {
-        console.error("Failed to load admin profile:", error);
+        console.error("FAILED TO LOAD SETTINGS:", error);
+
+        toast.error(
+          error.response?.data?.message || "Failed to load website settings.",
+        );
+      } finally {
+        setLoadingSettings(false);
       }
     };
 
-    loadAdminProfile();
+    loadData();
   }, [reset]);
 
-  // ==========================================
-  // Website Settings
-  // ==========================================
-
-  const handleWebsiteSettings = (e) => {
+  const handleSeoSettings = async (e) => {
     e.preventDefault();
 
-    // Keep your API implementation here later
-    // for SEO and footer settings.
+    if (!settings.metaTitle.trim()) {
+      toast.error("SEO meta title is required.");
+      return;
+    }
 
-    toast.success("Website settings saved successfully.");
+    if (!settings.metaDescription.trim()) {
+      toast.error("SEO meta description is required.");
+      return;
+    }
+
+    if (settings.metaTitle.length > 70) {
+      toast.error("SEO meta title cannot exceed 70 characters.");
+      return;
+    }
+
+    if (settings.metaDescription.length > 180) {
+      toast.error("SEO meta description cannot exceed 180 characters.");
+      return;
+    }
+
+    try {
+      setSavingSeo(true);
+
+      const response = await axios.put("/api/admin/settings", {
+        metaTitle: settings.metaTitle,
+        metaDescription: settings.metaDescription,
+        footerCopyright: settings.footerCopyright,
+      });
+
+      if (response.data?.success) {
+        const updatedSettings = response.data.settings;
+
+        setSettings({
+          metaTitle: updatedSettings.metaTitle || "",
+          metaDescription: updatedSettings.metaDescription || "",
+          footerCopyright: updatedSettings.footerCopyright || "",
+        });
+
+        toast.success(
+          response.data.message || "SEO settings saved successfully.",
+        );
+      }
+    } catch (error) {
+      console.error("SAVE SEO SETTINGS ERROR:", error);
+
+      toast.error(
+        error.response?.data?.message || "Failed to save SEO settings.",
+      );
+    } finally {
+      setSavingSeo(false);
+    }
   };
 
-  // ==========================================
-  // Admin Profile Update
-  // ==========================================
+  const handleFooterSettings = async () => {
+    if (!settings.footerCopyright.trim()) {
+      toast.error("Footer copyright text is required.");
+      return;
+    }
+
+    try {
+      setSavingFooter(true);
+
+      const response = await axios.put("/api/admin/settings", {
+        metaTitle: settings.metaTitle,
+        metaDescription: settings.metaDescription,
+        footerCopyright: settings.footerCopyright,
+      });
+
+      if (response.data?.success) {
+        const updatedSettings = response.data.settings;
+
+        setSettings({
+          metaTitle: updatedSettings.metaTitle || "",
+          metaDescription: updatedSettings.metaDescription || "",
+          footerCopyright: updatedSettings.footerCopyright || "",
+        });
+
+        toast.success(
+          response.data.message || "Footer settings saved successfully.",
+        );
+      }
+    } catch (error) {
+      console.error("SAVE FOOTER SETTINGS ERROR:", error);
+
+      toast.error(
+        error.response?.data?.message || "Failed to save footer settings.",
+      );
+    } finally {
+      setSavingFooter(false);
+    }
+  };
 
   const handleAdminProfileUpdate = async (data) => {
     try {
@@ -107,7 +206,6 @@ export default function WebsiteSettings() {
             "Please fill all password fields to change your password.",
           );
 
-          setLoadingProfile(false);
           return;
         }
       }
@@ -145,10 +243,6 @@ export default function WebsiteSettings() {
 
   return (
     <section className="space-y-6">
-      {/* ==========================================
-          Header
-      ========================================== */}
-
       <div className="flex flex-col gap-2 sm:gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">
@@ -162,14 +256,8 @@ export default function WebsiteSettings() {
         </div>
       </div>
 
-      {/* ==========================================
-          SEO Settings
-      ========================================== */}
-
       <motion.div
-        whileHover={{
-          y: -2,
-        }}
+        whileHover={{ y: -2 }}
         className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:rounded-3xl lg:p-8"
       >
         <div className="mb-6 flex items-start gap-3 sm:mb-8">
@@ -188,26 +276,32 @@ export default function WebsiteSettings() {
           </div>
         </div>
 
-        <form onSubmit={handleWebsiteSettings}>
+        <form onSubmit={handleSeoSettings}>
           <div className="space-y-5">
-            {/* Meta Title */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">
-                SEO Meta Title
-              </label>
+              <div className="mb-2 flex items-center justify-between">
+                <label className="block text-sm font-semibold text-slate-700">
+                  SEO Meta Title
+                </label>
+
+                <span className="text-xs text-slate-400">
+                  {settings.metaTitle.length}/70
+                </span>
+              </div>
 
               <input
                 type="text"
                 value={settings.metaTitle}
                 onChange={(e) =>
-                  setSettings({
-                    ...settings,
+                  setSettings((prev) => ({
+                    ...prev,
                     metaTitle: e.target.value,
-                  })
+                  }))
                 }
                 placeholder="Enter SEO Meta Title"
-                className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/10"
+                maxLength={70}
+                disabled={loadingSettings || savingSeo}
+                className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/10 disabled:cursor-not-allowed disabled:bg-slate-50"
               />
 
               <p className="mt-2 text-xs text-slate-500">
@@ -215,24 +309,30 @@ export default function WebsiteSettings() {
               </p>
             </div>
 
-            {/* Meta Description */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">
-                SEO Meta Description
-              </label>
+              <div className="mb-2 flex items-center justify-between">
+                <label className="block text-sm font-semibold text-slate-700">
+                  SEO Meta Description
+                </label>
+
+                <span className="text-xs text-slate-400">
+                  {settings.metaDescription.length}/180
+                </span>
+              </div>
 
               <textarea
                 rows={5}
                 value={settings.metaDescription}
                 onChange={(e) =>
-                  setSettings({
-                    ...settings,
+                  setSettings((prev) => ({
+                    ...prev,
                     metaDescription: e.target.value,
-                  })
+                  }))
                 }
                 placeholder="Enter SEO Meta Description"
-                className="w-full resize-none rounded-xl border border-slate-300 p-4 text-sm outline-none transition focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/10"
+                maxLength={180}
+                disabled={loadingSettings || savingSeo}
+                className="w-full resize-none rounded-xl border border-slate-300 p-4 text-sm outline-none transition focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/10 disabled:cursor-not-allowed disabled:bg-slate-50"
               />
 
               <p className="mt-2 text-xs text-slate-500">
@@ -244,23 +344,18 @@ export default function WebsiteSettings() {
           <div className="mt-6 flex justify-stretch sm:justify-end">
             <button
               type="submit"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-6 py-3 font-semibold text-white shadow-lg transition hover:scale-[1.02] sm:w-auto sm:px-8"
+              disabled={loadingSettings || savingSeo}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-6 py-3 font-semibold text-white shadow-lg transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-8"
             >
               <Save size={18} />
-              Save SEO Settings
+              {savingSeo ? "Saving..." : "Save SEO Settings"}
             </button>
           </div>
         </form>
       </motion.div>
 
-      {/* ==========================================
-          Footer Settings
-      ========================================== */}
-
       <motion.div
-        whileHover={{
-          y: -2,
-        }}
+        whileHover={{ y: -2 }}
         className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:rounded-3xl lg:p-8"
       >
         <div className="mb-6 flex items-start gap-3 sm:mb-8">
@@ -288,46 +383,39 @@ export default function WebsiteSettings() {
             rows={3}
             value={settings.footerCopyright}
             onChange={(e) =>
-              setSettings({
-                ...settings,
+              setSettings((prev) => ({
+                ...prev,
                 footerCopyright: e.target.value,
-              })
+              }))
             }
             placeholder="Enter Footer Copyright Text"
-            className="w-full resize-none rounded-xl border border-slate-300 p-4 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
+            maxLength={200}
+            disabled={loadingSettings || savingFooter}
+            className="w-full resize-none rounded-xl border border-slate-300 p-4 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:bg-slate-50"
           />
 
           <p className="mt-2 text-xs text-slate-500">
-            This text will appear in the footer of your website.
+            {settings.footerCopyright.length}/200 characters
           </p>
         </div>
 
         <div className="mt-6 flex justify-stretch sm:justify-end">
           <button
             type="button"
-            onClick={() => {
-              toast.success("Footer settings saved successfully.");
-            }}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-6 py-3 font-semibold text-white shadow-lg transition hover:scale-[1.02] sm:w-auto sm:px-8"
+            onClick={handleFooterSettings}
+            disabled={loadingSettings || savingFooter}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-6 py-3 font-semibold text-white shadow-lg transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-8"
           >
             <Save size={18} />
-            Save Footer Settings
+            {savingFooter ? "Saving..." : "Save Footer Settings"}
           </button>
         </div>
       </motion.div>
 
-      {/* ==========================================
-          Admin Account Settings
-      ========================================== */}
-
       <motion.div
-        whileHover={{
-          y: -2,
-        }}
+        whileHover={{ y: -2 }}
         className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:rounded-3xl lg:p-8"
       >
-        {/* Header */}
-
         <div className="mb-6 flex items-start gap-3 sm:mb-8">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 text-white sm:h-12 sm:w-12">
             <UserCog className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -348,13 +436,7 @@ export default function WebsiteSettings() {
           onSubmit={handleSubmit(handleAdminProfileUpdate)}
           className="space-y-6"
         >
-          {/* ==========================================
-              Name + Email
-          ========================================== */}
-
           <div className="grid gap-5 md:grid-cols-2">
-            {/* Name */}
-
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-700">
                 Admin Name
@@ -383,8 +465,6 @@ export default function WebsiteSettings() {
                 </p>
               )}
             </div>
-
-            {/* Email */}
 
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -416,10 +496,6 @@ export default function WebsiteSettings() {
             </div>
           </div>
 
-          {/* ==========================================
-              Password Section
-          ========================================== */}
-
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
             <div className="mb-5 flex items-start gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-slate-700 shadow-sm">
@@ -439,8 +515,6 @@ export default function WebsiteSettings() {
             </div>
 
             <div className="grid gap-5 md:grid-cols-3">
-              {/* Current Password */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Current Password
@@ -467,8 +541,6 @@ export default function WebsiteSettings() {
                   </button>
                 </div>
               </div>
-
-              {/* New Password */}
 
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -507,8 +579,6 @@ export default function WebsiteSettings() {
                   </p>
                 )}
               </div>
-
-              {/* Confirm Password */}
 
               <div>
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -557,10 +627,6 @@ export default function WebsiteSettings() {
             </div>
           </div>
 
-          {/* ==========================================
-              Save Account Button
-          ========================================== */}
-
           <div className="flex justify-stretch sm:justify-end">
             <button
               type="submit"
@@ -568,7 +634,6 @@ export default function WebsiteSettings() {
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-blue-500 px-6 py-3 font-semibold text-white shadow-lg transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:px-8"
             >
               <Save size={18} />
-
               {loadingProfile ? "Saving Changes..." : "Save Account Changes"}
             </button>
           </div>

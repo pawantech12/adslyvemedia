@@ -33,10 +33,6 @@ export default function LeadPopup() {
     },
   });
 
-  /* =========================
-     OPEN POPUP AFTER 3 SECONDS
-  ========================= */
-
   useEffect(() => {
     const alreadyShown = sessionStorage.getItem("adslyve-popup");
 
@@ -50,10 +46,6 @@ export default function LeadPopup() {
     }
   }, []);
 
-  /* =========================
-     BODY SCROLL LOCK
-  ========================= */
-
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -65,10 +57,6 @@ export default function LeadPopup() {
       document.body.style.overflow = "";
     };
   }, [open]);
-
-  /* =========================
-     ESCAPE KEY
-  ========================= */
 
   useEffect(() => {
     const close = (e) => {
@@ -83,10 +71,6 @@ export default function LeadPopup() {
       window.removeEventListener("keydown", close);
     };
   }, []);
-
-  /* =========================
-     SUBMIT LEAD
-  ========================= */
 
   const onSubmit = async (data) => {
     try {
@@ -124,10 +108,6 @@ export default function LeadPopup() {
     }
   };
 
-  /* =========================
-     CLOSE POPUP
-  ========================= */
-
   const handleClose = () => {
     if (isSubmitting) return;
 
@@ -149,15 +129,7 @@ export default function LeadPopup() {
           }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-lg"
         >
-          {/* =========================
-              BACKDROP
-          ========================= */}
-
           <div onClick={handleClose} className="absolute inset-0" />
-
-          {/* =========================
-              MAIN MODAL
-          ========================= */}
 
           <motion.div
             initial={{
@@ -180,10 +152,6 @@ export default function LeadPopup() {
             }}
             className="relative z-10 flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-[36px] border border-white/70 bg-white shadow-[0_45px_120px_rgba(15,23,42,.25)] lg:block"
           >
-            {/* =========================
-                BACKGROUND
-            ========================= */}
-
             <div className="absolute inset-0 overflow-hidden">
               <motion.div
                 animate={{
@@ -212,10 +180,6 @@ export default function LeadPopup() {
               <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f915_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f915_1px,transparent_1px)] bg-[size:70px_70px]" />
             </div>
 
-            {/* =========================
-                CLOSE BUTTON
-            ========================= */}
-
             <button
               type="button"
               onClick={handleClose}
@@ -227,10 +191,6 @@ export default function LeadPopup() {
             </button>
 
             <div className="relative grid lg:grid-cols-2">
-              {/* =========================
-                  LEFT PANEL
-              ========================= */}
-
               <div className="relative hidden overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8 text-white lg:block lg:p-12">
                 <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-cyan-500/20 blur-[120px]" />
 
@@ -292,10 +252,6 @@ export default function LeadPopup() {
                 </div>
               </div>
 
-              {/* =========================
-                  RIGHT PANEL
-              ========================= */}
-
               <div
                 className="
                   max-h-[92vh]
@@ -331,19 +287,11 @@ export default function LeadPopup() {
                   customized digital marketing strategy.
                 </p>
 
-                {/* =========================
-                    FORM
-                ========================= */}
-
                 <form
                   onSubmit={handleSubmit(onSubmit)}
                   noValidate
                   className="mt-8 space-y-5"
                 >
-                  {/* =========================
-                      NAME
-                  ========================= */}
-
                   <div>
                     <label
                       htmlFor="lead-name"
@@ -385,10 +333,6 @@ export default function LeadPopup() {
                     )}
                   </div>
 
-                  {/* =========================
-                      EMAIL
-                  ========================= */}
-
                   <div>
                     <label
                       htmlFor="lead-email"
@@ -422,10 +366,6 @@ export default function LeadPopup() {
                       </p>
                     )}
                   </div>
-
-                  {/* =========================
-                      PHONE
-                  ========================= */}
 
                   <div>
                     <label
@@ -470,10 +410,6 @@ export default function LeadPopup() {
                     )}
                   </div>
 
-                  {/* =========================
-                      MESSAGE
-                  ========================= */}
-
                   <div>
                     <label
                       htmlFor="lead-message"
@@ -513,10 +449,6 @@ export default function LeadPopup() {
                       </p>
                     )}
                   </div>
-
-                  {/* =========================
-                      SUBMIT
-                  ========================= */}
 
                   <motion.button
                     whileHover={
@@ -567,10 +499,6 @@ export default function LeadPopup() {
                       )}
                     </span>
                   </motion.button>
-
-                  {/* =========================
-                      SUCCESS MESSAGE
-                  ========================= */}
 
                   <AnimatePresence>
                     {success && (

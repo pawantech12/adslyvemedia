@@ -9,7 +9,6 @@ import {
   Home,
   UserRound,
   BriefcaseBusiness,
-  Workflow,
   Building2,
   BarChart3,
   HelpCircle,
@@ -101,7 +100,7 @@ export default function Navbar() {
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-300/20 via-fuchsia-300/20 to-emerald-300/20 blur-2xl opacity-0 transition duration-500 group-hover:opacity-100" />
 
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="AdsLyve Media"
               width={0}
               height={0}
@@ -174,7 +173,7 @@ export default function Navbar() {
 
           <div className="flex shrink-0 items-center justify-between border-b border-slate-100 px-6 py-5">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="AdsLyve Media"
               width={150}
               height={50}

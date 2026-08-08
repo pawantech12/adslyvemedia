@@ -123,7 +123,7 @@ export default function AdminLoginPage() {
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-300/25 via-fuchsia-300/25 to-blue-300/25 blur-2xl opacity-70 transition duration-500 group-hover:opacity-100" />
 
                 <Image
-                  src="/logo-dark.png"
+                  src="/logo-dark.webp"
                   alt="AdsLyve Media"
                   width={160}
                   height={60}

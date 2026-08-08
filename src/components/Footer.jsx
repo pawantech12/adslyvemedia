@@ -61,21 +61,32 @@ const socialStyles = [
 
 export default function Footer() {
   const [contact, setContact] = useState(null);
+  const [footerCopyright, setFooterCopyright] = useState("");
 
   useEffect(() => {
-    const fetchContact = async () => {
+    const fetchFooterData = async () => {
       try {
-        const response = await axios.get("/api/admin/contact");
+        const [contactResponse, settingsResponse] = await Promise.all([
+          axios.get("/api/admin/contact"),
+          axios.get("/api/admin/settings"),
+        ]);
 
-        if (response.data.success) {
-          setContact(response.data.contact);
+        if (contactResponse.data?.success) {
+          setContact(contactResponse.data.contact);
+        }
+
+        if (settingsResponse.data?.success) {
+          setFooterCopyright(
+            settingsResponse.data.settings?.footerCopyright ||
+              "© 2026 AdsLyve Media. All Rights Reserved.",
+          );
         }
       } catch (error) {
-        console.error("FETCH FOOTER CONTACT ERROR:", error);
+        console.error("FETCH FOOTER DATA ERROR:", error);
       }
     };
 
-    fetchContact();
+    fetchFooterData();
   }, []);
 
   const socialLinks = socialStyles
@@ -87,8 +98,6 @@ export default function Footer() {
 
   return (
     <footer className="relative overflow-hidden bg-slate-950">
-      {/* Background */}
-
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -left-40 top-0 h-96 w-96 rounded-full bg-fuchsia-600/10 blur-[120px]" />
 
@@ -99,8 +108,6 @@ export default function Footer() {
 
       <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
-
           <motion.div
             initial={{
               opacity: 0,
@@ -124,7 +131,7 @@ export default function Footer() {
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-300/20 via-fuchsia-300/20 to-emerald-300/20 opacity-0 blur-2xl transition duration-500 group-hover:opacity-100" />
 
               <Image
-                src="/logo-dark.png"
+                src="/logo-dark.webp"
                 alt="AdsLyve Media"
                 width={0}
                 height={0}
@@ -139,8 +146,6 @@ export default function Footer() {
               SEO, paid advertising, and measurable performance strategies.
             </p>
           </motion.div>
-
-          {/* Quick Links */}
 
           <motion.div
             initial={{
@@ -178,8 +183,6 @@ export default function Footer() {
             </div>
           </motion.div>
 
-          {/* Services */}
-
           <motion.div
             initial={{
               opacity: 0,
@@ -211,8 +214,6 @@ export default function Footer() {
               ))}
             </div>
           </motion.div>
-
-          {/* Social */}
 
           <motion.div
             initial={{
@@ -262,13 +263,9 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        {/* Bottom */}
-
         <div className="mt-8 border-t border-white/10 pt-5 sm:mt-10 sm:pt-6">
           <div className="flex flex-col items-center justify-between gap-3 text-center md:flex-row">
-            <p className="text-sm text-slate-400">
-              © {new Date().getFullYear()} ADSLYVE MEDIA. All rights reserved.
-            </p>
+            <p className="text-sm text-slate-400">{footerCopyright}</p>
 
             <div className="flex items-center gap-2.5">
               <span className="h-2.5 w-2.5 rounded-full bg-fuchsia-500" />
